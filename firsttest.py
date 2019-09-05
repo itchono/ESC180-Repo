@@ -1,0 +1,2 @@
+
+input(%s, "henlo")
