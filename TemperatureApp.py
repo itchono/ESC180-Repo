@@ -1,9 +1,8 @@
 # I will write my first function here
 def fahrenheit_to_celsius(fahrenheit):
-    '''
+    ''' Converts fahrenheit to celsius
     (float) -> float
-    :param fahrenheit:
-    :return: returns the celsius equivalent
+    Takes in float temperature in Fahrenheit and returns a float, in celsius
     '''
 
     return (fahrenheit-32)*5/9
