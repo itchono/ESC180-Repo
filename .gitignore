@@ -2,3 +2,4 @@
 *.iml
 *.xml
 __pycache__/lec02stuff.cpython-37.pyc
+*.pyc
