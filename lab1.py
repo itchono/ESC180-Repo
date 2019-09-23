@@ -22,9 +22,12 @@ def is_cow_within_bounds(cow_position, boundary_points):
     boundary_points must be inputted as a list of 4 lists each containing 2 floats, each denoting the
     x,y coordinates of a rectangular boundary starting from the upper left corner and moving clockwise.
     cow_position must be inputted as a list of 2 floats, denoting the x,y coordinates of the cow
+    Assumes x+ is right and y+ is down
     """
     int result = -1;
-    if cow_position
+    if  boundary_points[1][0] > cow_position[0] > boundary_points[0][0]:
+        # verfy x condition is satisfied
+    if boundary_points[3][1] > [
 
 
 def find_cow_distance_to_boundary(cow_position, boundary_point):
