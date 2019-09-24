@@ -11,7 +11,7 @@ def find_euclidean_distance(x1, y1, x2, y2):
     (float, float, float, float) -> float
     find_euclidean_distance calculates the Euclidean distance between two given 2D points
     P1(x1, y1) and P2(x2, y2) as a float rounded to 2 decimal places and returns it.
-    The two points are inputted in sequence component-by component as 4 floats, in the sequence x1, y1, x2, y2
+    The two points are inputted in sequence component-by component as 4 floats, in the sequence x1, y1, x2, y2.
     """
     # apply distance formula d = sqrt((x2-x1)^2 + (y2-y1)^2)
     # and also round to 2 d.p. using round function
@@ -27,7 +27,7 @@ def is_cow_within_bounds(cow_position, boundary_points):
     boundary_points must be inputted as a list of 4 nested lists, each containing 2 floats, denoting the
     x,y coordinates of a rectangular boundary starting from the upper left corner and moving clockwise.
     cow_position must be inputted as a list of 2 floats, denoting the x,y coordinates of the cow
-    Assumes x+ is right and y+ is up
+    Assumes x+ is right and y+ is up.
     """
     # check cow's position:
     # upper statement: check whether cow's x coordinate fits between the x coordinates of points 0 and 1
@@ -44,16 +44,49 @@ def is_cow_within_bounds(cow_position, boundary_points):
 
 def find_cow_distance_to_boundary(cow_position, boundary_point):
     """
-    Your docstring here
+    (list<float>, list<float>) -> float
+    find_cow_distance_to_boundary takes in two lists, cow_position and boundary_points, each containing two float
+    values representing x,y coordinates and returns the distance between those specified points as a float rounded to
+    2 d.p.
+    NOTE: this function relies on find_euclidean_distance to round accurately.
     """
-    # function body
+    return find_euclidean_distance(cow_position[0], cow_position[1], boundary_point[0], boundary_point[1])
 
 
 def find_time_to_escape(cow_speed, cow_distance):
     """
-    Your docstring here
+    (float, float) -> float
+    find_time_to_escape determines the time it will take for a cow to escape its enclosure given the float cow_speed
+    representing the cow's speed and the float cow_distance representing the distance needed to escape.
+    The value is returned as a float rounded to 2 d.p.
+
+    IF cow_speed is equal to zero (or negative) the function returns -1 by default.
     """
+    if cow_speed > 0:
+        # for any valid speed (non zero)
+        return round(cow_distance / cow_speed, 2)
+    else:
+        return -1
 
 
-if __name__ == "__main__":
-    print(is_cow_within_bounds([3, 3], [[4, 4], [5, 4], [5, 2], [4, 2]]))
+def report_cow_status(cow_position1, cow_position2, delta_t, boundary_points):
+    """
+    report_cow_status
+    """
+    # function body
+
+
+if __name__ == '__main__':
+    # USED FOR TESTING ONLY; do not mark thanks
+    print(find_euclidean_distance(3.0, 3.0, 2.0, 5.0), 2.24)  # should return 2.24
+    print(find_euclidean_distance(5.0, 2.0, 4.0, 2.0), 1.0)  # should be 1.0
+
+    print(is_cow_within_bounds([3, 3], [[2, 5], [5, 5], [5, 1], [2, 1]]), 1)
+    print(is_cow_within_bounds([3, 3], [[4, 4], [5, 4], [5, 2], [4, 2]]), 0)
+
+    print(find_cow_distance_to_boundary([3, 3], [2, 5]), 2.24)  # should return 2.24
+    print(find_cow_distance_to_boundary([2, 2], [0, 1]), 2.24)  # should return 2.24
+
+    print(find_time_to_escape(2.0, 8.0), 4.0)  # should return 4.0
+    print(find_time_to_escape(9.0, 111.0), 12.33)  # should return 12.33
+
