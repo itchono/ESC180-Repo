@@ -101,9 +101,10 @@ def report_cow_status(cow_position1, cow_position2, delta_t, boundary_points):
     if bool(is_cow_within_bounds(cow_position1, boundary_points)) and \
             bool(is_cow_within_bounds(cow_position2, boundary_points)):
 
-        # NEW: find shortest straight line
-        escape_distances = {abs(cow_position2[0]-boundary_points[0][0])
-        # list out possible escape distances with all 4 boundary points
+        # NEW: find shortest straight line to a single side of the rectangle
+        escape_distances = {abs(cow_position2[0]-boundary_points[0][0]), abs(cow_position2[0]-boundary_points[1][0]),
+                            abs(cow_position2[1]-boundary_points[0][1]), abs(cow_position2[1] - boundary_points[2][1])}
+        # list out possible escape distances with all 4 EDGES
         # use min() function to return minimum of the 4 possibilities
         # plug into find_time_to_escape
         return find_time_to_escape(cow_speed, min(escape_distances))
