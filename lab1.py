@@ -100,10 +100,9 @@ def report_cow_status(cow_position1, cow_position2, delta_t, boundary_points):
     # Case 1: Cow within bounds at both points --> measure escape time
     if bool(is_cow_within_bounds(cow_position1, boundary_points)) and \
             bool(is_cow_within_bounds(cow_position2, boundary_points)):
-        escape_distances = {find_cow_distance_to_boundary(cow_position2, boundary_points[0]),
-                            find_cow_distance_to_boundary(cow_position2, boundary_points[1]),
-                            find_cow_distance_to_boundary(cow_position2, boundary_points[2]),
-                            find_cow_distance_to_boundary(cow_position2, boundary_points[3])}
+
+        # NEW: find shortest straight line
+        escape_distances = {abs(cow_position2[0]-boundary_points[0][0])
         # list out possible escape distances with all 4 boundary points
         # use min() function to return minimum of the 4 possibilities
         # plug into find_time_to_escape
