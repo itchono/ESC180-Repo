@@ -38,7 +38,7 @@ def cdn_change(m):
     n = m//5
     m %= 5
 
-    if (m >= 5):
+    if (m >= 3):
         n += 1
     print(m0, "is equal to\n", q, "quarters\n", d, "dimes\n", n, "nickels\n")
     
