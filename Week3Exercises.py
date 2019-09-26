@@ -24,13 +24,27 @@ def round_num():
 def trig():
     d = math.pi*float(input("Angle in degrees"))/180
     print(d)
-    print(math.sin(d), math.cos(d), math.tan(d))
+    print("sin(", d, ") =", math.sin(d), "\ncos(", d, ") =", math.cos(d), "\ntan(", d, ") =",math.tan(d))
     
+# ex 4
+def cdn_change(m):
+    m0 = m
+    q = m//25
+    m %= 25
 
+    d = m//10
+    m %= 10
 
+    n = m//5
+    m %= 5
 
+    if (m >= 5):
+        n += 1
+    print(m0, "is equal to\n", q, "quarters\n", d, "dimes\n", n, "nickels\n")
+    
 if __name__ == "__main__":
     change(67)
     round_num()
     trig()
+    cdn_change(69)
     
