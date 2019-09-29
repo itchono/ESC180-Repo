@@ -1,3 +1,5 @@
+# Week 3 Exercises
+
 import math
 
 # ex 1

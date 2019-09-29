@@ -1,3 +1,5 @@
+# Week 2 Exercises - There is no week 1 btw
+
 def exercise_1():
     print("I am going to love this course")
 
@@ -25,7 +27,7 @@ def exercise_4():
 
 def exercise_5():
     x = float(input("Input x: "))
-    print("The value of y = 4x + 3 is", (4 * x + 3))
+    print("The value of y = 4x + 3 is", round((4 * x + 3),2))
 
 
 if __name__ == "__main__":
