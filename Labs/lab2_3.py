@@ -63,10 +63,11 @@ def add_two_bin_nums(four_bit_num1, four_bit_num2):
     # ignore overflow bits
 
     result = [0, 0, 0, 0]
-    for i in range(3):
+    for i in range(3, -1, -1):
         result[i] += four_bit_num1[i] + four_bit_num2[i]
-        if (result[i] >= 2 and i >= 0):
-            result[i-1] += 1
+        if (result[i] >= 2):
+            if (i > 0):
+                result[i-1] += 1
             result[i] -= 2
     return result
     # TBD
@@ -85,6 +86,8 @@ def get_error_source(four_bit_num1, four_bit_num2, result):
 
 
 if __name__ == "__main__":
+    print( add_two_bin_nums([1,1,1,1], [1,1,1,0]))
+    '''
     # test your functions here
     # num 1 and num 2 should be positive integers less than 16
 
@@ -117,3 +120,4 @@ if __name__ == "__main__":
             print('Addition error')
         else:
             print('Unknown error code')
+    '''
