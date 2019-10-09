@@ -1,5 +1,6 @@
 # You may want to import your lab2_2 module
-# from lab2_2 import *
+
+from lab2_2 import *
 
 def dec_to_bin_list(dec_num):
     # DO NOT modify this function
