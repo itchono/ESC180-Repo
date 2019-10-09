@@ -1,5 +1,8 @@
-from math import *
+# ESC180 Lab 2 pt 1
+# Mingde Yin
+# 1005904425
 
+from math import *
 
 def vector_from_points(p1, p2):
     '''
@@ -116,20 +119,57 @@ def cross_product(v, w):
     are assumed to be given in order with the remaining elements set to zero. If n > 3 then
     an empty list is returned.
 
-    TBD: EXAMPELS
+    >>>cross_product([2, 8], [1, 4, 3])
+    [24, -6, 0]
     '''
 
-    
+    if (len(v) > 3 or len(w) > 3):
+        return list([]) # error case
+    else:
+        # fix arrays if not satisfactory number of dimensions
+        for i in range(0, 3):
+            if len(v) <= i:
+                v.append(0)
+            if len(w) <= i:
+                w.append(0)
+            # add correct indices to v and w if it has 0, 1, 2 components
+        # take cross product
+        return [v[1] * w[2] - v[2] * w[1], v[2] * w[0] - v[0] * w[2], v[0] * w[1] - v[1] * w[0]]
 
 
 def scalar_projection(v, w):
-    ''' Fill in docstring
     '''
+    (list<number>, list<number>) -> number
 
+    scalar_projection returns the scalar projection of w onto v, where w and v are lists
+    representing n-dimensional vectors.
+
+    >>> scalar_projection([-2], [1.5])
+    -1.5
+    '''
+    # use existing functions to expedite process
+    return dot_product(v, w) / vector_length(v)
 
 def vector_projection(v, w):
-    ''' Fill in docstring
     '''
+    (list<number>, list<number>) -> list<number>
+
+    vector_projection returns a list representing the vector projection of w onto v,
+    each of which are represented by n-dimensional input lists.
+
+    >>> vector_projection([-2], [1.5])
+    [1.5]
+    '''
+
+    s = scalar_projection(v, w)
+    # get scalar projection
+    u = unit_vector(v)
+    # create unit vector
+
+    for i in range(0, len(v)):
+        u[i] *= s
+        # multiply components
+    return u
 
 
 if __name__ == "__main__":
@@ -138,3 +178,9 @@ if __name__ == "__main__":
     print(vector_length([3, 4]))
     print(angle_between([0, 1, 0, 1], [1, 3, 4, 5]))
     print(unit_vector([2, 1]))
+    print(cross_product([2,8], [1,4,3]))
+    print(cross_product( [1, 1, 1, 0], [1, 5.5]))
+    print(cross_product([1, 1, 1], [5.5, 5.5, 5.5]))
+    print(cross_product([], [2]))
+    print(scalar_projection([-2], [1.5]))
+    print(vector_projection([0, 3], [1.5, 2]))
