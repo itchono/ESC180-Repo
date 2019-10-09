@@ -51,8 +51,17 @@ def bin_list_to_dec(bin_list):
     return int(dec)
 
 def add_two_bin_nums(four_bit_num1, four_bit_num2):
-    ''' Fill in docstring
     '''
+    (list<int>, list<int>) -> list<int>
+
+    add_two_bin_nums returns the result of the binary addition of two four bit packets,
+    four_bit_num1, four_bit_num2
+
+    >>> add_two_bin_nums([1,1,1,0], [1,1,0,0])
+    [1, 0, 1, 0]
+    '''
+    # ignore overflow bits
+
 
 def check_bit_add(four_bit_num1, four_bit_num2, result):
     ''' Fill in docstring
@@ -71,7 +80,7 @@ if __name__ == "__main__":
     # test your functions here
     # num 1 and num 2 should be positive integers less than 16
 
-        dec1 = int(input('Num 1: '))
+    dec1 = int(input('Num 1: '))
     dec2 = int(input('Num 2: '))
 
     bin1 = dec_to_bin_list(dec1)
