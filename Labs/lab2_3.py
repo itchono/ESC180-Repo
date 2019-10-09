@@ -63,13 +63,12 @@ def add_two_bin_nums(four_bit_num1, four_bit_num2):
     # ignore overflow bits
 
     result = [0, 0, 0, 0]
-    for i in range(0, 4):
-        n = 3 - i
-        result.insert(0, four_bit_num1[n] + four_bit_num2[n])
-        if (n > 0):
-            if (result[n] > 1):
-                result[n] = 0
-                result[n+1] += 1
+    for i in range(3):
+        result[i] += four_bit_num1[i] + four_bit_num2[i]
+        if (result[i] >= 2 and i >= 0):
+            result[i-1] += 1
+            result[i] -= 2
+    return result
     # TBD
 
 def check_bit_add(four_bit_num1, four_bit_num2, result):
