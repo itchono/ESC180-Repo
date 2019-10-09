@@ -62,6 +62,15 @@ def add_two_bin_nums(four_bit_num1, four_bit_num2):
     '''
     # ignore overflow bits
 
+    result = [0, 0, 0, 0]
+    for i in range(0, 4):
+        n = 3 - i
+        result.insert(0, four_bit_num1[n] + four_bit_num2[n])
+        if (n > 0):
+            if (result[n] > 1):
+                result[n] = 0
+                result[n+1] += 1
+    # TBD
 
 def check_bit_add(four_bit_num1, four_bit_num2, result):
     ''' Fill in docstring
