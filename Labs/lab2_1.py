@@ -4,6 +4,7 @@
 
 from math import *
 
+
 def vector_from_points(p1, p2):
     '''
     (list<number>, list<number>) -> list<number>
@@ -62,10 +63,10 @@ def angle_between(v, w):
         dot_p += v[i] * w[i]
         # element by element multiplication to get dot product
 
-    dot_p /= (vector_length(v) * vector_length(w)) # divide by magnitude
+    dot_p /= (vector_length(v) * vector_length(w))  # divide by magnitude
 
     angle = acos(dot_p)
-    return (angle * 180 / pi) # convert from rad to degrees
+    return (angle * 180 / pi)  # convert from rad to degrees
 
 
 def dot_product(v, w):
@@ -107,7 +108,7 @@ def unit_vector(v):
 
         for i in v:
             # use list iterable
-            rt_list.append(i/vector_length(v))
+            rt_list.append(i / vector_length(v))
         return rt_list
 
 
@@ -124,7 +125,7 @@ def cross_product(v, w):
     '''
 
     if (len(v) > 3 or len(w) > 3):
-        return list([]) # error case
+        return list([])  # error case
     else:
         # fix arrays if not satisfactory number of dimensions
         for i in range(0, 3):
@@ -149,6 +150,7 @@ def scalar_projection(v, w):
     '''
     # use existing functions to expedite process
     return dot_product(v, w) / vector_length(v)
+
 
 def vector_projection(v, w):
     '''
@@ -178,8 +180,8 @@ if __name__ == "__main__":
     print(vector_length([3, 4]))
     print(angle_between([0, 1, 0, 1], [1, 3, 4, 5]))
     print(unit_vector([2, 1]))
-    print(cross_product([2,8], [1,4,3]))
-    print(cross_product( [1, 1, 1, 0], [1, 5.5]))
+    print(cross_product([2, 8], [1, 4, 3]))
+    print(cross_product([1, 1, 1, 0], [1, 5.5]))
     print(cross_product([1, 1, 1], [5.5, 5.5, 5.5]))
     print(cross_product([], [2]))
     print(scalar_projection([-2], [1.5]))
