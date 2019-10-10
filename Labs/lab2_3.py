@@ -67,14 +67,25 @@ def add_two_bin_nums(four_bit_num1, four_bit_num2):
         result[i] += four_bit_num1[i] + four_bit_num2[i]
         if (result[i] >= 2):
             if (i > 0):
+                # allow overflow for 2^4 bit
                 result[i-1] += 1
             result[i] -= 2
     return result
     # TBD
 
 def check_bit_add(four_bit_num1, four_bit_num2, result):
-    ''' Fill in docstring
     '''
+    (list<int>, list<int>, list<int>) -> list<int>
+
+    check_bit_add checks the result of addition against the input list result.
+    Error indices are returned as a list.
+
+    >>>check_bit_add([1, 0, 1, 0],[0, 1, 0, 1], [0,1,0,1])
+    [0, 2]
+    '''
+
+    return  add_two_bin_nums(four_bit_num1, four_bit_num2)
+
 
 def check_dec_add(four_bit_num1, four_bit_num2):
     ''' Fill in docstring
@@ -86,7 +97,7 @@ def get_error_source(four_bit_num1, four_bit_num2, result):
 
 
 if __name__ == "__main__":
-    print( add_two_bin_nums([1,1,1,1], [1,1,1,0]))
+    print( add_two_bin_nums([0,1,1,0], [1,1,0,0]))
     '''
     # test your functions here
     # num 1 and num 2 should be positive integers less than 16

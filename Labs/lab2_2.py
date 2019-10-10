@@ -42,7 +42,7 @@ def find_packet_diff(packet1, packet2):
     '''
     (list<int>, list<int>) -> int
 
-    packet_diff returns the number of bit error between packet1 and packet2.
+    packet_diff returns the number of bit errors between packet1 and packet2.
 
     >>> find_packet_diff([0,1,0,1], [1,1,0,1])
     1
