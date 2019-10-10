@@ -1,3 +1,7 @@
+# ESC180 Lab 2 pt 3
+# Mingde Yin
+# 1005904425
+
 # You may want to import your lab2_2 module
 
 from lab2_2 import *

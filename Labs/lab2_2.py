@@ -1,4 +1,4 @@
-# ESC180 Lab 2 pt 1
+# ESC180 Lab 2 pt 2
 # Mingde Yin
 # 1005904425
 
