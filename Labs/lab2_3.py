@@ -77,28 +77,59 @@ def check_bit_add(four_bit_num1, four_bit_num2, result):
     '''
     (list<int>, list<int>, list<int>) -> list<int>
 
-    check_bit_add checks the result of addition against the input list result.
-    Error indices are returned as a list.
+    check_bit_add checks the result of 4 bit addition against the input list result.
+    Error indices are returned as a list. If there are no errors, [] is returned
 
     >>>check_bit_add([1, 0, 1, 0],[0, 1, 0, 1], [0,1,0,1])
     [0, 2]
     '''
 
-    return  add_two_bin_nums(four_bit_num1, four_bit_num2)
+    # reuse existing functions to expedite process
+    return error_indices(add_two_bin_nums(four_bit_num1, four_bit_num2), result)
 
 
 def check_dec_add(four_bit_num1, four_bit_num2):
-    ''' Fill in docstring
+    '''
+    (list<int>, list<int>) -> int
+
+    check_dec_add checks if the bit addition of the two 4 bit inputs results in the same
+    as the addition of decimals.
+
+    Returns 0 if the bit addition result differs from correct decimal value
+    Returns 1 if the bit addition does not differ
+
+    >>> check_dec_add([0,0,1,1], [0,1,0,1])
+    1
     '''
 
+    # compare binary addition converted to decimal against sum of binaries converted to decimals
+    # also, use int cast from boolean
+    return int(bin_list_to_dec(add_two_bin_nums(four_bit_num1, four_bit_num2)) == \
+               (bin_list_to_dec(four_bit_num1) + bin_list_to_dec(four_bit_num2)))
+
+
 def get_error_source(four_bit_num1, four_bit_num2, result):
-    ''' Fill in docstring
     '''
+    (list<int>, list<int>, list<int>) -> list<int>
+
+    get_error_source returns 0 if result yields the correct decimal value for addition
+    returns 1 if bit overflow solely caused the error
+    returns 2 if bit overflow did not solely cause the error ex. addition error.
+    '''
+
+    if (len(list(check_bit_add(four_bit_num1, four_bit_num2, result))) > 0):
+        # Case: erroneous indices
+        # must check this one first to verify the integrity of the actual answer for all cases
+        return 2
+    elif (check_dec_add(four_bit_num1, four_bit_num2) == 1):
+        # Case: decimal addition will be correct
+        return 0
+    else:
+        # Case: bit overflow, check_dec_add would return 0
+        return 1
 
 
 if __name__ == "__main__":
-    print( add_two_bin_nums([0,1,1,0], [1,1,0,0]))
-    '''
     # test your functions here
     # num 1 and num 2 should be positive integers less than 16
 
@@ -111,7 +142,7 @@ if __name__ == "__main__":
     bin_result = add_two_bin_nums(bin1, bin2) # to test your add_two_nums
 
     # makes the answer sometimes incorrect (emulates a bug that is not solely due to bit overflow)
-    bin_result.sort()
+    # bin_result.sort()
 
     # alternate method of messing up the result
     # bin_result = list(reversed(bin_result))
@@ -121,14 +152,12 @@ if __name__ == "__main__":
     print('{} + {} = {}'.format(dec1, dec2, dec_result))
 
     # for testing your get_error_source, you may wish to comment this section initially
-    if dec_result != dec1 + dec2:
-        error_source = get_error_source(bin1, bin2, bin_result)
-        if error_source == 0:
-            print('Correct')
-        elif error_source == 1:
-            print('Bit overflow error')
-        elif error_source == 2:
-            print('Addition error')
-        else:
-            print('Unknown error code')
-    '''
+    error_source = get_error_source(bin1, bin2, bin_result)
+    if error_source == 0:
+        print('Correct')
+    elif error_source == 1:
+        print('Bit overflow error')
+    elif error_source == 2:
+        print('Addition error')
+    else:
+        print('Unknown error code')
