@@ -121,47 +121,42 @@ def get_error_source(four_bit_num1, four_bit_num2, result):
     returns 2 if bit overflow did not solely cause the error ex. addition error.
     '''
 
-    if (len(list(check_bit_add(four_bit_num1, four_bit_num2, result))) > 0):
-        # Case: erroneous indices
-        # must check this one first to verify the integrity of the actual answer for all cases
+    
+    if (check_dec_add(four_bit_num1, four_bit_num2) == 0):
+        # Case: bit overflow, check_dec_add would return 0
+        # must be checked first because overflow cases can be caught as incorrect addition
+        return 1
+    elif (len(list(check_bit_add(four_bit_num1, four_bit_num2, result))) > 0):
+        # Case: erroneous indices otherwise means incorrect addition
         return 2
-    elif (check_dec_add(four_bit_num1, four_bit_num2) == 1):
+    else:
         # Case: decimal addition will be correct
         return 0
-    else:
-        # Case: bit overflow, check_dec_add would return 0
-        return 1
 
 
 if __name__ == "__main__":
     # test your functions here
     # num 1 and num 2 should be positive integers less than 16
+    '''
+    four_bit_num1 = [1, 1, 1, 1]
+    four_bit_num2 = [1,1,1,1]
 
-    dec1 = int(input('Num 1: '))
-    dec2 = int(input('Num 2: '))
-
-    bin1 = dec_to_bin_list(dec1)
-    bin2 = dec_to_bin_list(dec2)
-
-    bin_result = add_two_bin_nums(bin1, bin2) # to test your add_two_nums
-
-    # makes the answer sometimes incorrect (emulates a bug that is not solely due to bit overflow)
-    # bin_result.sort()
-
-    # alternate method of messing up the result
-    # bin_result = list(reversed(bin_result))
-
-    dec_result = bin_list_to_dec(bin_result)
-
-    print('{} + {} = {}'.format(dec1, dec2, dec_result))
-
-    # for testing your get_error_source, you may wish to comment this section initially
-    error_source = get_error_source(bin1, bin2, bin_result)
-    if error_source == 0:
-        print('Correct')
-    elif error_source == 1:
-        print('Bit overflow error')
-    elif error_source == 2:
-        print('Addition error')
-    else:
-        print('Unknown error code')
+    print((bin_list_to_dec(add_two_bin_nums(four_bit_num1, four_bit_num2)),\
+               (bin_list_to_dec(four_bit_num1) + bin_list_to_dec(four_bit_num2))))
+    
+    '''
+    for dec1 in range(0, 16):
+        for dec2 in range(0,16):
+            bin1 = dec_to_bin_list(dec1)
+            bin2 = dec_to_bin_list(dec2)
+            print(dec1, dec2, get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2)))
+            if (get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2)) != 0):
+                print("Error dec1 = {} and dec2 = {} - result was {}".format(dec1, dec2, get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2))))
+    for dec1 in range(0, 16):
+        for dec2 in range(0,16):
+            bin1 = dec_to_bin_list(dec1)
+            bin2 = dec_to_bin_list(dec2)
+            if (get_error_source(bin1, bin2, [0, 0, 0, 0]) != 2):
+                print("Error dec1 = {} and dec2 = {} - result was {}".format(dec1, dec2, get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2))))
+    
+    
