@@ -122,13 +122,13 @@ def get_error_source(four_bit_num1, four_bit_num2, result):
     '''
 
     
-    if (check_dec_add(four_bit_num1, four_bit_num2) == 0):
-        # Case: bit overflow, check_dec_add would return 0
-        # must be checked first because overflow cases can be caught as incorrect addition
-        return 1
-    elif (len(list(check_bit_add(four_bit_num1, four_bit_num2, result))) > 0):
+    if (len(list(check_bit_add(four_bit_num1, four_bit_num2, result))) > 0):
         # Case: erroneous indices otherwise means incorrect addition
+        # must be checked first as per test cases.
         return 2
+    elif (check_dec_add(four_bit_num1, four_bit_num2) == 0):
+        # Case: bit overflow, check_dec_add would return 0
+        return 1
     else:
         # Case: decimal addition will be correct
         return 0
@@ -145,6 +145,10 @@ if __name__ == "__main__":
                (bin_list_to_dec(four_bit_num1) + bin_list_to_dec(four_bit_num2))))
     
     '''
+    
+    print(get_error_source([1,0,0,1], [1,0,0,1], [1,0,1,0]))
+    
+    
     for dec1 in range(0, 16):
         for dec2 in range(0,16):
             bin1 = dec_to_bin_list(dec1)
@@ -158,5 +162,7 @@ if __name__ == "__main__":
             bin2 = dec_to_bin_list(dec2)
             if (get_error_source(bin1, bin2, [0, 0, 0, 0]) != 2):
                 print("Error dec1 = {} and dec2 = {} - result was {}".format(dec1, dec2, get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2))))
-    
+            if (get_error_source(bin1, bin2, dec_to_bin_list(dec1+ dec2)) == 2):
+                print("2")
+       
     
