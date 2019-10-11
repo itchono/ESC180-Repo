@@ -119,6 +119,9 @@ def get_error_source(four_bit_num1, four_bit_num2, result):
     get_error_source returns 0 if result yields the correct decimal value for addition
     returns 1 if bit overflow solely caused the error
     returns 2 if bit overflow did not solely cause the error ex. addition error.
+    
+    >>>get_error_source([1,0,0,1], [1,0,0,1], [1,0,1,0])
+    2
     '''
 
     
