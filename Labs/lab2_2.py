@@ -12,7 +12,7 @@ def packet_size(packet):
     >>> packet_size([0,1,0,1])
     4
     '''
-    return len(packet)  # TBD what?
+    return len(packet)
 
 
 def error_indices(packet1, packet2):
@@ -30,7 +30,6 @@ def error_indices(packet1, packet2):
     # initialize as empty
 
     for i in range(0, packet_size(packet1)):
-        # noinspection PyRedundantParentheses
         if (packet1[i] != packet2[i]):
             # bit error
             err_list.append(i)
@@ -38,13 +37,13 @@ def error_indices(packet1, packet2):
     return err_list
 
 
-def find_packet_diff(packet1, packet2):
+def packet_diff(packet1, packet2):
     '''
     (list<int>, list<int>) -> int
 
     packet_diff returns the number of bit errors between packet1 and packet2.
 
-    >>> find_packet_diff([0,1,0,1], [1,1,0,1])
+    >>> packet_diff([0,1,0,1], [1,1,0,1])
     1
     '''
     return len(error_indices(packet1, packet2))
@@ -52,5 +51,5 @@ def find_packet_diff(packet1, packet2):
 
 if __name__ == "__main__":
     # test your bit error rate detector here
-    print(find_packet_diff([0, 1, 0, 1], [1, 1, 0, 1]))
+    print(packet_diff([0, 1, 0, 1], [1, 1, 0, 1]))
     print(error_indices([0, 1, 1, 1], [1, 1, 0, 1]))
