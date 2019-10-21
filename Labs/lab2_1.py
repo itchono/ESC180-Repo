@@ -186,3 +186,4 @@ if __name__ == "__main__":
     print(cross_product([], [2]))
     print(scalar_projection([-2], [1.5]))
     print(vector_projection([0, 3], [1.5, 2]))
+

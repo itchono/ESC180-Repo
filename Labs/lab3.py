@@ -1,6 +1,16 @@
-import utilities
+from utilities import *
 
 def rotate_90_degrees(image_array, direction = 1):
+    '''
+    (list<image>, int) -> list<image>
+    
+    rotate_90_degrees takes in a list of length h (number of rows) with sublists of length w (number of columns)
+    and returns a list with the same dimensions representing the image rotated 90 degrees
+    either clockwise or anticlockwise.
+    
+    >>> rotate_90_degrees([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 1)
+    
+    '''
 	#1 for clock_wise. -1 for anticlockwise
 	
 	#####################################
