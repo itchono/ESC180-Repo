@@ -12,16 +12,23 @@ def rotate_90_degrees(image_array, direction = 1):
     [[0,0,0], [0,0,0], [1,1,1]]
     '''
     
-    (w,h) = (len(image_array), len(image_array[0]))
+    (w,h) = (len(image_array[0]), len(image_array))
+    
+    print("Width = {}, Height = {}".format(w, h))
     # determine width and height
     
-    output_array = [[0]*w]*h
+    output_array = [[0]*w for i in range(h)]
+    # USE THIS FOR 2D ARRAYS YOU BOT
     
-    for x in range(0, w):
-        for y in range(0, h):
-            output_array[x][y] = image_array[x][y]
+    print("Width = {}, Height = {}".format(len(output_array[0]), len(output_array)))
     
-    
+    # process row by row
+    for y in range(0, h):
+        for x in range(0, w):
+            
+            output_array[y][x] = image_array[(h-1)-y][(w-1)-x]
+            
+            
    
 
 	
