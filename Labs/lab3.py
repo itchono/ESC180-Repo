@@ -65,7 +65,7 @@ def invert_greyscale(image_array):
 
     for y in range(0, h):
         for x in range(0, w):
-            output_array[y][x] = 255-int(image_array[y][x])
+            output_array[y][x] = 255 - int(image_array[y][x])
     return output_array
 
 
@@ -127,13 +127,11 @@ def crop(image_array, direction, n_pixels):
     for y in range(0, h):
         for x in range(0, w):
             if direction == 'left':
-                output_array[y][x] = image_array[y][x+n_pixels]
+                output_array[y][x] = image_array[y][x + n_pixels]
             elif direction == 'down':
-                output_array[y][x] = image_array[y+n_pixels][x]
+                output_array[y][x] = image_array[y + n_pixels][x]
             else:
                 output_array[y][x] = image_array[y][x]
-
-
 
     return output_array
 
@@ -174,22 +172,39 @@ def invert_rgb(image_array):
     (w, h) = (len(image_array[0]), len(image_array))
     # determine width and height of incoming image
 
-    output_array = [[[0]*3 for j in range(w)] for i in range(h)]
+    output_array = [[[0] * 3 for j in range(w)] for i in range(h)]
     # create empty output template in rgb pixel format for faster operation
 
     for y in range(0, h):
         for x in range(0, w):
-            for c in range(0,3):
+            for c in range(0, 3):
                 # loop 3 times for each colour channel
                 output_array[y][x][c] = 255 - int(image_array[y][x][c])
     return output_array
 
 
 def gaussian_blur(image_array, sigma=0.84089, convolution_size=3):
-    #####################################
-    ##########YOUR CODE GOES HERE########
-    #####################################
+    '''
+    (list<image>, float, int) -> list<image>
 
+    gaussian_blur takes in an image list and outputs the gaussian blurred image
+
+    See spec doc for examples
+    '''
+
+    # generate convolution matrix
+
+    ### tentative
+
+    pi = 3.1415926535897
+    e = 2.7182818284
+
+    cm = [[0] * convolution_size for i in range(convolution_size)]
+
+    for x in range(0, convolution_size):
+        for y in range(0, convolution_size):
+            cm[x][y] = 1 / (2 * pi * sigma) * e ** (-(x ** 2 + y ** 2) / (2 * sigma ** 2))
+    print(cm)
     print("not yet implemented")
 
 
@@ -200,8 +215,37 @@ def image_to_drawing(image_array):
 
     print("not yet implemented")
 
+
 def brightness_contrast_gamma(image_array, alpha, beta, gamma):
-    print("not yet implemented")
+    '''
+    (list<image>, float, float, float) -> image<list>
+    '''
+
+    (w, h) = (len(image_array[0]), len(image_array))
+    # determine width and height of incoming image
+
+    output_array = [[[0] * 3 for j in range(w)] for i in range(h)]
+    # create empty output template in rgb pixel format for faster operation
+
+    for y in range(0, h):
+        for x in range(0, w):
+            for c in range(0, 3):
+                # loop 3 times for each colour channel
+                # b/c correction
+                output_array[y][x][c] = alpha*int(image_array[y][x][c]) + beta
+                if  output_array[y][x][c] > 255:
+                    output_array[y][x][c] = 255
+                elif output_array[y][x][c] < 0:
+                    output_array[y][x][c] = 0
+
+                output_array[y][x][c] = ((int(image_array[y][x][c])/255)**gamma) * 255
+                if  output_array[y][x][c] > 255:
+                    output_array[y][x][c] = 255
+                elif output_array[y][x][c] < 0:
+                    output_array[y][x][c] = 0
+
+    return output_array
+
 
 if (__name__ == "__main__"):
     file = 'surprised_pikachu.png'
@@ -213,4 +257,6 @@ if (__name__ == "__main__"):
     utilities.write_image(rgb_to_grayscale(
         utilities.image_to_list(file)), 'gray.png')
     '''
-    utilities.write_image(crop(img, 'down', 200), 'test.png')
+
+    utilities.write_image(brightness_contrast_gamma(img, 1, 0, 0.8), 'test.png')
+    # gaussian_blur(img)
