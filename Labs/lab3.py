@@ -35,29 +35,50 @@ def rotate_90_degrees(image_array, direction=1):
     # invert width and height = w lists of length h
 
     # process row by row
-    if direction == -1:
-        for y in range(0, h):
-            for x in range(0, w):
+    for y in range(0, h):
+        for x in range(0, w):
+            # determine direction of rotation
+            if direction == -1:
                 output_array[(w - 1) - x][y] = image_array[y][x]
                 # remap each pixel to a rotated image CCW
-    else:
-        for y in range(0, h):
-            for x in range(0, w):
-                output_array[x][y] = image_array[(h-1)-y][x]
+            else:
+                output_array[x][y] = image_array[(h - 1) - y][x]
                 # remap each pixel to a rotated image CW
 
     return output_array
 
+
+def invert_greyscale(image_array):
+    '''
+    (list<image, greyscale>) -> list<image, greyscale>
+
+    invert_greyscale takes in a list representing a *greyscale image*
+    and returns it with all pixels inverted in colour
+
+    See spec doc for example
+    '''
+    (w, h) = (len(image_array[0]), len(image_array))
+    # determine width and height of incoming image
+
+    output_array = [[0] * w for i in range(h)]
+    # create empty output template
+
+    for y in range(0, h):
+        for x in range(0, w):
+            output_array[y][x] = 255-int(image_array[y][x])
+    return output_array
+
+
 def flip_image(image_array, axis=0):
     '''
-        (list<image>, int) -> list<image>
+    (list<image>, int) -> list<image>
 
-        flip_image takes in a list with the same format as above
-        and returns a list with the same dimensions representing the image flipped either
-        vertically (1),  horizontally (0), or both (-1)
+    flip_image takes in a list with the same format as above
+    and returns a list with the same dimensions representing the image flipped either
+    vertically (1),  horizontally (0), or both (-1)
 
-        >>> flip_image([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 0)
-        [[1,0,0], [1,0,0], [1,0,0]]
+    >>> flip_image([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 0)
+    [[1,0,0], [1,0,0], [1,0,0]]
     '''
     # axis = -1 (along x = y), 0 along y, 1 along x
 
@@ -66,52 +87,110 @@ def flip_image(image_array, axis=0):
 
     output_array = [[0] * w for i in range(h)]
     # create empty output template
-
-    if axis == -1:
-        for y in range(0, h):
-            for x in range(0, w):
-                output_array[(h - 1) - y][(w-1)-x] = image_array[y][x]
-    elif axis == 1:
-        for y in range(0, h):
-            for x in range(0, w):
+    for y in range(0, h):
+        for x in range(0, w):
+            # determine axis of reflection
+            if axis == -1:
+                output_array[(h - 1) - y][(w - 1) - x] = image_array[y][x]
+            elif axis == 1:
                 output_array[(h - 1) - y][x] = image_array[y][x]
-    else:
-        for y in range(0, h):
-            for x in range(0, w):
+            else:
                 output_array[y][(w - 1) - x] = image_array[y][x]
 
     return output_array
 
 
 def crop(image_array, direction, n_pixels):
-    #####################################
-    ##########YOUR CODE GOES HERE########
-    #####################################
+    '''
+    (list<image>, string, int) -> list<image>
+
+    crop takes in a list with the same format as above
+    and returns a list with the the image cropped according to
+    a direction (‘left’/‘right’/‘up’/‘down’) by n pixels
+
+    >>> flip_image([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 0)
+    [[1,0,0], [1,0,0], [1,0,0]]
+    '''
+
+    (w, h) = (len(image_array[0]), len(image_array))
+    # determine width and height of incoming image
+
+    # respecifying params for output array
+    if direction == 'left' or direction == 'right':
+        w -= n_pixels
+    else:
+        h -= n_pixels
+
+    output_array = [[0] * w for i in range(h)]
+    # create empty output template
+
+    for y in range(0, h):
+        for x in range(0, w):
+            if direction == 'left':
+                output_array[y][x] = image_array[y][x+n_pixels]
+            elif direction == 'down':
+                output_array[y][x] = image_array[y+n_pixels][x]
+            else:
+                output_array[y][x] = image_array[y][x]
+
+
+
     return output_array
 
 
 def rgb_to_grayscale(rgb_image_array):
-    #####################################
-    ##########YOUR CODE GOES HERE########
-    #####################################
+    '''
+    (list<image>) -> list<image, greyscale>
+
+    rgb_to_greyscale converts the given RGB image to a Grayscale image using the formula
+    𝑔𝑟𝑎𝑦 = 0.2989 ∗ 𝑟 + 0.5870 ∗ 𝑔 + 0.1140 ∗ b
+
+    See spec doc for examples
+    '''
+
+    (w, h) = (len(rgb_image_array[0]), len(rgb_image_array))
+    # determine width and height of incoming image
+
+    output_array = [[0] * w for i in range(h)]
+    # create empty output template
+
+    for y in range(0, h):
+        for x in range(0, w):
+            output_array[y][x] = 0.2989 * rgb_image_array[y][x][0] + 0.5870 * rgb_image_array[y][x][1] + \
+                                 0.1140 * rgb_image_array[y][x][2]
 
     return output_array
 
 
 def invert_rgb(image_array):
+    '''
+    (list<image, greyscale>) -> list<image, greyscale>
+
+    invert_rgb takes in a list representing an rgb image
+    and returns it with all pixels inverted in colour
+
+    See spec doc for example
+    '''
+    (w, h) = (len(image_array[0]), len(image_array))
+    # determine width and height of incoming image
+
+    output_array = [[[0]*3 for j in range(w)] for i in range(h)]
+    # create empty output template in rgb pixel format for faster operation
+
+    for y in range(0, h):
+        for x in range(0, w):
+            for c in range(0,3):
+                # loop 3 times for each colour channel
+                output_array[y][x][c] = 255 - int(image_array[y][x][c])
+    return output_array
+
+
+def gaussian_blur(image_array, sigma=0.84089, convolution_size=3):
     #####################################
     ##########YOUR CODE GOES HERE########
     #####################################
 
-    return output_array
-
-
-def gaussian_blur(image_array, sigma=0.84089):
-    #####################################
-    ##########YOUR CODE GOES HERE########
-    #####################################
-
-    return output_array
+    print("not yet implemented")
 
 
 def image_to_drawing(image_array):
@@ -119,16 +198,19 @@ def image_to_drawing(image_array):
     ##########YOUR CODE GOES HERE########
     #####################################
 
-    return output_array
+    print("not yet implemented")
 
+def brightness_contrast_gamma(image_array, alpha, beta, gamma):
+    print("not yet implemented")
 
 if (__name__ == "__main__"):
-    file = 'robot.png'
+    file = 'surprised_pikachu.png'
 
     img = utilities.image_to_list("surprised_pikachu.png")
+
+    grey = rgb_to_grayscale(img)
     '''
     utilities.write_image(rgb_to_grayscale(
         utilities.image_to_list(file)), 'gray.png')
     '''
-
-    utilities.write_image(flip_image(img, 1), 'test.png')
+    utilities.write_image(crop(img, 'down', 200), 'test.png')
