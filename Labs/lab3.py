@@ -16,24 +16,9 @@ def rotate_90_degrees(image_array, direction=1):
     (w, h) = (len(image_array[0]), len(image_array))
     # determine width and height of incoming image
 
-    '''
-    output_array = [[0]*w for i in range(h)]
-    # USE THIS FOR 2D ARRAYS YOU BOT
-    
-    print("Width = {}, Height = {}".format(len(output_array[0]), len(output_array)))
-    print("Width = {}, Height = {}".format(w, h))  # DEBUG ONLY
-    
-    # process row by row
-    for y in range(0, h):
-        for x in range(0, w):
-            
-            output_array[y][x] = image_array[y][x]
-    '''
-    # this will clone the image as-is
-
     output_array = [[0] * h for i in range(w)]
     # invert width and height = w lists of length h
-
+    
     # process row by row
     for y in range(0, h):
         for x in range(0, w):
@@ -258,5 +243,5 @@ if (__name__ == "__main__"):
         utilities.image_to_list(file)), 'gray.png')
     '''
 
-    utilities.write_image(brightness_contrast_gamma(img, 1, 0, 0.8), 'test.png')
+    utilities.write_image(rotate_90_degrees(img, -1), 'test.png')
     # gaussian_blur(img)
