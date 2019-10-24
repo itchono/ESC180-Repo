@@ -214,7 +214,7 @@ def histogram_equalization(img_array):
 if (__name__ == "__main__"):
     #file = 'surprised_pikachu.png'
 
-    img = utilities.image_to_list("square.jpg")
+    img = utilities.image_to_list("Specimen.jpg")
 
     grey = rgb_to_grayscale(img)
     '''
