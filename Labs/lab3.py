@@ -179,11 +179,25 @@ def histogram_equalization(img_array):
     See spec doc for examples
     '''
     
-    (w, h) = (len(rgb_image_array[0]), len(rgb_image_array))
+    (w, h) = (len(img_array[0]), len(img_array))
     # determine width and height of incoming image
 
     output_array = [[0] * w for i in range(h)]
     # create empty output template
+    
+    greys = [0]*256
+    
+    for y in range(0, h):
+        for x in range(0, w):
+            greys[int(img_array[y][x])] += 1
+    
+    sum = 0
+    for v in greys:
+        v /= (w*h)
+        print(v)
+        sum += v
+        
+    print(sum)
     
     return output_array
 
@@ -191,9 +205,9 @@ def histogram_equalization(img_array):
 if (__name__ == "__main__"):
     #file = 'surprised_pikachu.png'
 
-    #img = utilities.image_to_list("surprised_pikachu.png")
+    img = utilities.image_to_list("surprised_pikachu.png")
 
-    #grey = rgb_to_grayscale(img)
+    grey = rgb_to_grayscale(img)
     '''
     utilities.write_image(rgb_to_grayscale(
         utilities.image_to_list(file)), 'gray.png')
@@ -209,4 +223,5 @@ if (__name__ == "__main__"):
     for i in output:
         print(i)
 
-    #utilities.write_image(rotate_90_degrees(img, -1), 'test.png')
+    histogram_equalization(grey)
+    utilities.write_image(grey, 'gray.png')
