@@ -1,0 +1,5 @@
+Name	Cost	Tier	Winrates
+Berserker's Greaves	1100	Advanced	49,50,51,52,50.5
+RFC	2800	Finished	45, 60, 76, 43,56.0
+IE	3600	Legendary	30, 25, 16, 90,40.25
+BC	3000	Finished	60, 45, 70, 60,58.75
