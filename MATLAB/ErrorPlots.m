@@ -1,35 +1,42 @@
-v = 10:100;
+% MATLAB Lab 1 Activity 1 and 2 Plots
+% Mingde Yin
+% November 1, 2019
 
-i = zeros(91,1);
+n = 10:100; % values of n
 
-i_actual = 14/3 .* ones(91, 1);
+i = arrayfun(@MidpointInt, n); % computed integral values
 
-for j = 10:100
-    i(j-9) = MidpointInt(j);
-end
-    
+i_actual = ones(1, 91) .* 14/3; % actual integral values
+
 hold on
+% plot integral vs actual
 
-plot(v, i)
-plot(v, i_actual)
+plot(n, i, 'b--', n, i_actual, 'b');
+title('$$ \textup{Midpoint Approximation of}\  \int_{0}^{3}\sqrt{x+1} \ dx $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Approximation')
+legend('approximate value', 'exact value')
+axis([0 100 0 inf])
+axis 'auto y'
 
-e = abs(i - i_actual);
-
-% K = -0.0313
-
-eb = zeros(91,1)
-
-for j = 10:100
-    eb(j-9) = 27*0.0313/(24*j^2);
-end
-
-% TBD ERROR WRONG
+% second plot
 hold off
-plot(v, e)
-hold on
-plot(v, eb)
 
-% now for error
+% compute error function based on definition
+err = abs(14/3 - i);
+
+% based on second derivative, least upper bound over [0,3] is -1/32
+
+errbound = 1./n.^2 .* 27/32;
+% must be positive? not sure
+
+plot(n, err, 'b', n, errbound, 'b--');
+title('$$ \textup{Error Bound vs Actual Error} $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Error')
+legend('actual error', 'error bound')
+axis([0 100 0 inf])
+axis 'auto y'
 
 
 
