@@ -238,4 +238,4 @@ if (__name__ == "__main__"):
 
     histogram_equalization(gray)
     utilities.write_image(rotate_90_degrees(img, -1), 'cool.png')
-    utilities.write_image(histogram_equalization(grey), 'histogram.png')
+    utilities.write_image(histogram_equalization(gray), 'histogram.png')
