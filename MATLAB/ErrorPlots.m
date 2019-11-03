@@ -1,35 +1,71 @@
-v = 10:100;
+% MATLAB Lab 1 Activity 1 and 2 Plots
+% Mingde Yin
+% November 1, 2019
 
-i = zeros(91,1);
+n = 10:100; % values of n
 
-i_actual = 14/3 .* ones(91, 1);
+im = arrayfun(@MidpointInt, n); % computed integral values
 
-for j = 10:100
-    i(j-9) = MidpointInt(j);
-end
-    
-hold on
+i_actual = ones(1, 91) .* 14/3; % actual integral values
 
-plot(v, i)
-plot(v, i_actual)
+figure('Name', 'Midpoint')
+% plot integral vs actual
 
-e = abs(i - i_actual);
+plot(n, im, 'b--', n, i_actual, 'b');
+title('$$ \textup{Midpoint Approximation of}\  \int_{0}^{3}\sqrt{x+1} \ dx $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Approximation')
+legend('approximate value', 'exact value')
+axis([0 100 0 inf])
+axis 'auto y'
 
-% K = -0.0313
+% second plot
+figure('Name', 'Error for Midpoint')
+% compute error function based on definition
+err = abs(14/3 - im);
 
-eb = zeros(91,1)
+% based on second derivative, least upper bound of abs(f''(x)) over [0,3]
+% is 1/4
 
-for j = 10:100
-    eb(j-9) = 27*0.0313/(24*j^2);
-end
+errbound = 27./(24*n.^2) .* 1/4;
+% must be positive? not sure
 
-% TBD ERROR WRONG
-hold off
-plot(v, e)
-hold on
-plot(v, eb)
+plot(n, err, 'b', n, errbound, 'b--');
+title('$$ \textup{Error Bound vs Actual Error} $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Error')
+legend('actual error', 'error bound')
+axis([0 100 0 inf])
+axis 'auto y'
 
-% now for error
+% next, trapezoid
+it = arrayfun(@TrapInt, n); % computed integral values
 
+figure('Name', 'Trapezoidal')
+% plot integral vs actual
+
+plot(n, it, 'b--', n, i_actual, 'b');
+title('$$ \textup{Trapezoidal Approximation of}\  \int_{0}^{3}\sqrt{x+1} \ dx $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Approximation')
+legend('approximate value', 'exact value')
+axis([0 100 0 inf])
+axis 'auto y'
+
+err = abs(14/3 - it);
+% change error bound
+errbound = 27./(12*n.^2) .* 1/4;
+
+figure('Name', 'Error for Trapezoidal')
+
+plot(n, err, 'b', n, errbound, 'b--');
+title('$$ \textup{Error Bound vs Actual Error} $$', 'Interpreter', 'latex');
+xlabel('Number of subdivisions (n)')
+ylabel('Error')
+legend('actual error', 'error bound')
+axis([0 100 0 inf])
+axis 'auto y'
+
+%done
 
 

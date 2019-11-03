@@ -1,16 +1,24 @@
-% MATLAB Lab 1 Act. 1
+% MATLAB Lab 1 Activity 1
 % Mingde Yin
 % November 1, 2019
 
 % actual answer should be 14/3 = around 4.667
 
 function result = MidpointInt(n)
+    % splits interval from 0 to 3 into n equal partitions and returns
+    % integral found by midpoint approximation
+
+    % declare x0 and x1; the lower and upper bound of each partition
+    % respectively
     dx = 3/n;
     
-    result = 0;
+    x0 = 0:dx:3-dx; % produces array of lower bounds
+    x1 = x0+dx; % add dx to each lower bound to get an upper bound
     
-    for i = 1:n
-        % use midpoint approximation
-        result = result + sqrt((dx*(i-1) + dx*i)/2 + 1)*dx;
-    end
+    xbar = (x0+x1)/2; % find midpoints of partitions
+    
+    s = (sqrt(xbar + 1)).*dx;
+    
+    result = sum(s);
+    
 end
