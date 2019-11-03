@@ -33,11 +33,11 @@ def rotate_90_degrees(image_array, direction=1):
     return output_array
 
 
-def invert_greyscale(image_array):
+def invert_grayscale(image_array):
     '''
-    (list<image, greyscale>) -> list<image, greyscale>
+    (list<image, grayscale>) -> list<image, grayscale>
 
-    invert_greyscale takes in a list representing a *greyscale image*
+    invert_grayscale takes in a list representing a *grayscale image*
     and returns it with all pixels inverted in colour
 
     See spec doc for example
@@ -125,9 +125,9 @@ def crop(image_array, direction, n_pixels):
 
 def rgb_to_grayscale(rgb_image_array):
     '''
-    (list<image>) -> list<image, greyscale>
+    (list<image>) -> list<image, grayscale>
 
-    rgb_to_greyscale converts the given RGB image to a Grayscale image using the formula
+    rgb_to_grayscale converts the given RGB image to a Grayscale image using the formula
     𝑔𝑟𝑎𝑦 = 0.2989 ∗ 𝑟 + 0.5870 ∗ 𝑔 + 0.1140 ∗ b
 
     See spec doc for examples
@@ -149,7 +149,7 @@ def rgb_to_grayscale(rgb_image_array):
 
 def invert_rgb(image_array):
     '''
-    (list<image, greyscale>) -> list<image, greyscale>
+    (list<image, grayscale>) -> list<image, grayscale>
 
     invert_rgb takes in a list representing an rgb image
     and returns it with all pixels inverted in colour
@@ -174,7 +174,7 @@ def histogram_equalization(img_array):
     '''
     (list<image>) -> list<image>
     
-    histogram_equalization takes in an image list of a greyscale image and equalizes it using a histogram.
+    histogram_equalization takes in an image list of a grayscale image and equalizes it using a histogram.
     
     See spec doc for examples
     '''
@@ -185,19 +185,19 @@ def histogram_equalization(img_array):
     output_array = [[0] * w for i in range(h)]
     # create empty output template
     
-    greys = [0]*256
+    grays = [0]*256
     # create frequency matrix for image
     
     for y in range(0, h):
         for x in range(0, w):
-            greys[int(img_array[y][x])] += 1
-            # count frequency of greys
+            grays[int(img_array[y][x])] += 1
+            # count frequency of grays
  
     cumulative_sum = [0]*256
     
     for i in range(0, 256):
         # create cumulative sum
-        cumulative_sum[i] = cumulative_sum[i-1] + greys[i]
+        cumulative_sum[i] = cumulative_sum[i-1] + grays[i]
         
     for i in range(0, 256):
         # normalize from 0 to 255
@@ -214,20 +214,20 @@ def histogram_equalization(img_array):
 if (__name__ == "__main__"):
     img = utilities.image_to_list("surprised_pikachu.png")
 
-    grey = rgb_to_grayscale(img)
+    gray = rgb_to_grayscale(img)
     '''
     utilities.write_image(rgb_to_grayscale(
         utilities.image_to_list(file)), 'gray.png')
     '''
     
-    sample_grey = [[2,3,4,5], [0, 0, 0, 0], [1, 7, 3, 8], [6, 9, 4, 2]]
+    sample_gray = [[2,3,4,5], [0, 0, 0, 0], [1, 7, 3, 8], [6, 9, 4, 2]]
     sample_rgb = [[[42, 41, 40], [50, 49, 48], [96, 95, 94]], [[1, 1, 1], [2, 2, 2], [3,3,3]], [[4,4,4], [5,5,5], [6,6,6]]]
     
-    output = crop(sample_grey, 'down', 1)
+    output = crop(sample_gray, 'down', 1)
     rgbtest = rotate_90_degrees(invert_rgb(sample_rgb),-1)
     
     
-    for i in sample_grey:
+    for i in sample_gray:
         print(i)
     print("\n")
     for i in output:
@@ -236,6 +236,6 @@ if (__name__ == "__main__"):
     for i in rgbtest:
         print(i)
 
-    histogram_equalization(grey)
+    histogram_equalization(gray)
     utilities.write_image(rotate_90_degrees(img, -1), 'cool.png')
-    utilities.write_image(histogram_equalization(grey), 'histogram.png')
+    utilities.write_image(histogram_equalization(gray), 'histogram.png')
