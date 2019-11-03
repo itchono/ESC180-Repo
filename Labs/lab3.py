@@ -78,7 +78,7 @@ def flip_image(image_array, axis=0):
         for x in range(0, w):
             # determine axis of reflection
             if axis == -1:
-                output_array[(h - 1) - y][(w - 1) - x] = image_array[y][x]
+                output_array[(w-1)-x][(h-1)-y] = image_array[y][x] # will work for a square image only
             elif axis == 1:
                 output_array[(h - 1) - y][x] = image_array[y][x]
             else:
@@ -95,8 +95,8 @@ def crop(image_array, direction, n_pixels):
     and returns a list with the the image cropped according to
     a direction (‘left’/‘right’/‘up’/‘down’) by n pixels
 
-    >>> flip_image([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 0)
-    [[1,0,0], [1,0,0], [1,0,0]]
+    >>> crop([[0, 0, 1],[0, 0, 1],[0, 0, 1]], 'left', 1)
+    [[0,0], [0,0], [0,0]]
     '''
 
     (w, h) = (len(image_array[0]), len(image_array))
@@ -212,7 +212,7 @@ def histogram_equalization(img_array):
 
 
 if (__name__ == "__main__"):
-    img = utilities.image_to_list("surprised_pikachu.png")
+    img = utilities.image_to_list("robot.png")
 
     grey = rgb_to_grayscale(img)
     '''
@@ -237,5 +237,5 @@ if (__name__ == "__main__"):
         print(i)
 
     histogram_equalization(grey)
-    utilities.write_image(rotate_90_degrees(img, -1), 'cool.png')
+    utilities.write_image(crop(img, 'left', 100), 'cool.png')
     utilities.write_image(histogram_equalization(grey), 'histogram.png')
