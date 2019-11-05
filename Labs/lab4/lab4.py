@@ -71,21 +71,23 @@ def build_ngram_counts(words, n):
 
         for j in range(i, i+n): # loop used to cycls through words for n-gram
             ng_list[j-i] = words[j] # puts word at position j into position 0, 1 ...n of the n-gram
+        
         #n-gram is complete at this point
-
         ng_tuple = tuple(ng_list)
-
         result[ng_tuple] = [[],[]] # initialize count lists
         
-        for j in range(i, len(words)):
+        for j in range(0, len(words) - n):
             # check how many times this occurs afterwards
-            
-            # use sets
-            if set(ng_list).issubset(set(words[j:])):
-               
-               for k in range(j, len(words))
+            # start index of search bound
+            seq = True
 
-                word = '' # word of interest found!
+            # check to see where n-gram occurs in list
+            for k in range(0, n):
+                if not words[j+k] == ng_list[k]:
+                    seq = False
+            if seq:
+                # if n-gram appears at position j, add next word after --> position j + n
+                word = words[j+n]
                 if word in result[ng_tuple][0]:
                     # if duplicate
                     # add 1 to occurrences
@@ -95,7 +97,7 @@ def build_ngram_counts(words, n):
                     result[ng_tuple][0].append(word)
                     result[ng_tuple][1].append(1)
                     # create entries
-        
+
     return result
 
 
