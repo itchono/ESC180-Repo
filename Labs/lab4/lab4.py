@@ -360,9 +360,15 @@ if __name__ == "__main__":
 
     token_list = parse_story("308.txt")
 
-    n_gram_model = build_ngram_model(parse_story("308.txt"), 3)
+    print('building model...')
 
-    text = gen_bot_text(gen_bot_list(n_gram_model, ('There', 'was', 'four'), len(token_list)), False)
+    n_gram_model = build_ngram_model(parse_story("308.txt"), 2)
+
+    print('generating words...')
+
+    text = gen_bot_text(gen_bot_list(n_gram_model, ('there', 'was'), len(token_list)), False)
+
+    print('making story...')
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
 
     
