@@ -236,7 +236,7 @@ def gen_bot_text(token_list, bad_author):
         cap_list = ['']*len(token_list)
 
         for i in range(len(token_list)):
-            cap_list[i] = str(token_list[i]).capitalize() if token_list[i] in utilities.ALWAYS_CAPITALIZE else token_list[i]
+            cap_list[i] = str(token_list[i]).capitalize() if str(token_list[i]).capitalize() in utilities.ALWAYS_CAPITALIZE else token_list[i]
             # capitalize if needed
 
         # begin with first letter captialized
@@ -356,8 +356,13 @@ if __name__ == "__main__":
 
     print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
 
-    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'I', 'cookies', '.'], False))
+    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'george', 'likes', 'cookies', '.'], False))
 
     token_list = parse_story("308.txt")
-    text = gen_bot_text(token_list, False)
+
+    n_gram_model = build_ngram_model(parse_story("308.txt"), 3)
+
+    text = gen_bot_text(gen_bot_list(n_gram_model, ('There', 'was', 'four'), len(token_list)), False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
+
+    
