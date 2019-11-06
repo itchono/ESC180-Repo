@@ -178,7 +178,7 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
 
     list is terminated once length reaches num_tokens, or if current ngram is not in the model, or the current ngram has no proceeding outputs.
 
-    <TBD>
+    See spec doc for examples.
     '''
 
     result = []
@@ -217,6 +217,68 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
     
     return result
 
+def gen_bot_text(token_list, bad_author):
+    '''
+    (list<str>, bool) -> str
+
+    gen_bot_text takes in a list of tokens and returns a string depending on the bool input
+    if true: returns the list concatenated into a strin
+    if false: processes it with grammar rules as per spec doc.
+
+    See spec doc for examples.
+    '''
+
+    if not bad_author:
+        return ' '.join(token_list)
+        # return raw spaced string
+    else:
+
+        # TBD: try to merge later
+        cap_list = ['']*len(token_list)
+
+        for i in range(len(token_list)):
+            cap_list[i] = str(token_list[i]).capitalize() if token_list[i] in utilities.ALWAYS_CAPITALIZE else token_list[i]
+            # capitalize if needed
+
+
+        # begin with first letter captialized
+        clean_list = ['']*len(token_list)
+        clean_list[0] = str(cap_list[0]).capitalize()
+        print(cap_list)
+
+        for i in range(1, len(token_list)):
+            if cap_list[i-1] in utilities.END_OF_SENTENCE_PUNCTUATION:
+                # case: end of sentence punctuation
+                clean_list.append(str(cap_list[i]).capitalize())
+
+            elif cap_list[i+1] in utilities.VALID_PUNCTUATION:
+                # case: other punctuation
+                clean_list.append(str(cap_list[i]) + str(cap_list[i+1])) # append without space
+            else:
+                clean_list.append(cap_list[i])
+        return ' '.join(clean_list) # turn to string
+
+
+def write_story(file_name, text, title, student_name, author, year):
+    '''
+    (str, str, str, str, str, number) -> None
+
+    write_story writes a story to a file
+    '''
+
+    with open(file_name, 'w') as file:
+
+        # TITLE PAGE
+        file.write('\n'*10) # 10 newline chars
+        file.write(title + ': ' + str(year) + ', UNLEASHED\n')
+        file.write(student_name + ', inspired by ' + author + '\n')
+        file.write('Copyright year published (' + str(year) + '), publisher: EngSci press')
+        file.write('\n'*17)
+
+
+        # MAIN BODY
+        # TBD
+
 if __name__ == "__main__":
 
     '''
@@ -246,4 +308,6 @@ if __name__ == "__main__":
     utilities.random.seed(10)
 
     print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
+
+    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.'], False))
 
