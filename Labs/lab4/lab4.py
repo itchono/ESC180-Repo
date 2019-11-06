@@ -28,7 +28,6 @@ def parse_story(file_name):
 
         return clean_str.lower().split() # convert to list
 
-
 def get_prob_from_count(counts):
     '''
     (list<number>) -> list<float>
@@ -162,12 +161,61 @@ def build_ngram_model(words, n):
     build_ngram_model returns a dict representing an n-gram-count model, given a size of n-gram (n) and an input set of words (words).
     This will take the **15 most common words, and show each count as a probability.
 
-    >>> build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the', 'child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+    See above functions for more detail on each specifi sublayer
 
+    >>> build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the', 'child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+    {('the', 'child'): [['will', 'can', 'may'], [0.5, 0.25, 0.25]], ('child', 'will'): [['the'], [1.0]], ('will', 'the'): [['child'], [1.0]], 
+    ('child', 'can'): [['the'], [1.0]], ('can', 'the'): [['child'], [1.0]], ('child', 'may'): [['go'], [1.0]], ('may', 'go'): [['home'], [1.0]], ('go', 'home'): [['.'], [1.0]]}
     '''
     return probify_ngram_counts(prune_ngram_counts(build_ngram_counts(words, n), 15))
 
-def 
+def gen_bot_list(ngram_model, seed, num_tokens=0):
+    '''
+    (dict<n-gram>, tuple<str>, int) -> list<str>
+
+    gen_bot_list returns a randomly generated list of tokens beginning with the first three tokens of seed,
+    and selecting all subsequent tokens using gen_next_token (utilities.py). 
+
+    list is terminated once length reaches num_tokens, or if current ngram is not in the model, or the current ngram has no proceeding outputs.
+
+    <TBD>
+    '''
+
+    result = []
+    # initialize empty list
+
+    if num_tokens < len(seed):
+        for i in range(0, num_tokens):
+            result.append(seed[i])
+    else:
+        result[0:len(seed)] = seed
+
+        n_len = 0
+        for k in ngram_model.keys():
+            n_len = len(k)
+            # TBD sort of inefficient
+
+        n_pos = 0 # position pointer for where to generate next n-gram
+
+        current_n = ['']*n_len
+        for i in range(n_len):
+            current_n[i] = result[i+n_pos]
+        current_n = tuple(current_n)
+
+        while len(result) < num_tokens and current_n in ngram_model.keys() and utilities.check_open_ngram(current_n, ngram_model):
+        # take advantage of lazy evaluation to check conditions in sequence
+        # validate all conditions to proceed
+            result.append(utilities.gen_next_token(current_n, ngram_model))
+            
+            n_pos += 1 # advance pointer to next position to start generating next n-gram
+
+            current_n = ['']*n_len
+            for i in range(n_len):
+                current_n[i] = result[i+n_pos]
+            current_n = tuple(current_n)
+            
+    
+    return result
 
 if __name__ == "__main__":
 
@@ -191,6 +239,11 @@ if __name__ == "__main__":
     '''
     # prelim testing
 
-    print(build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 
-    2))
+    n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+
+    #print(n_gram_model)
+
+    utilities.random.seed(10)
+
+    print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
 
