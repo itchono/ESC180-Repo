@@ -228,11 +228,10 @@ def gen_bot_text(token_list, bad_author):
     See spec doc for examples.
     '''
 
-    if not bad_author:
+    if bad_author:
         return ' '.join(token_list)
         # return raw spaced string
     else:
-
         # TBD: try to merge later
         cap_list = ['']*len(token_list)
 
@@ -240,22 +239,28 @@ def gen_bot_text(token_list, bad_author):
             cap_list[i] = str(token_list[i]).capitalize() if token_list[i] in utilities.ALWAYS_CAPITALIZE else token_list[i]
             # capitalize if needed
 
-
         # begin with first letter captialized
-        clean_list = ['']*len(token_list)
-        clean_list[0] = str(cap_list[0]).capitalize()
+        clean_list = []
+        clean_list.append(str(cap_list[0]).capitalize())
+
         print(cap_list)
 
-        for i in range(1, len(token_list)):
+        i = 1
+
+        while i < len(token_list):
             if cap_list[i-1] in utilities.END_OF_SENTENCE_PUNCTUATION:
                 # case: end of sentence punctuation
                 clean_list.append(str(cap_list[i]).capitalize())
 
-            elif cap_list[i+1] in utilities.VALID_PUNCTUATION:
+            elif i < len(token_list) -1 and cap_list[i+1] in utilities.VALID_PUNCTUATION:
                 # case: other punctuation
                 clean_list.append(str(cap_list[i]) + str(cap_list[i+1])) # append without space
+
+                i += 1 # skip space
             else:
                 clean_list.append(cap_list[i])
+            i+=1
+        print(clean_list)
         return ' '.join(clean_list) # turn to string
 
 
@@ -309,5 +314,5 @@ if __name__ == "__main__":
 
     print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
 
-    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.'], False))
+    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'I', 'cookies', '.'], False))
 
