@@ -77,9 +77,11 @@ def build_ngram_counts(words, n):
         
         for j in range(0, len(words) - n):
             # secondary loop. checks where the previously found n-grams occur again
-            seq = True
-
-            # check to see where n-gram occurs in list
+            
+            # check to see where n-gram occurs in remaining list
+            seq = set(ng_list).issubset(set(words[j:]))
+            # use sets to speed up detection process
+            
             pos = 0
             while True and pos < n:
                 # use while loop to perform linear search of array for sequence
@@ -190,7 +192,7 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
     else:
         result[0:len(seed)] = seed
 
-        n_len = 0
+        n_len = 0 # length of each n-gram must be determined
         for k in ngram_model.keys():
             n_len = len(k)
             # TBD sort of inefficient
@@ -293,7 +295,7 @@ def write_story(file_name, text, title, student_name, author, year):
         while i < len(text):
             
             pages = 0
-            while pages < 12:
+            while pages < 12 and i<len(text):
                 if pages == 0:
                     # CHAPTER
                     file.write('CHAPTER ' + str(ch) + '\n\n')
@@ -305,15 +307,20 @@ def write_story(file_name, text, title, student_name, author, year):
                 while lines < 30:
                     chars = 0
 
-                    if (lines <= 28):
+                    if (lines < 28):
                         while chars < 90 and i<len(text):
-                            # TBD implement space detection
-                            file.write(text[i])
-                            i += 1 # write next character
-                            chars += 1
+                            if text[i:].find(' ') > (90 - chars):
+                                # end of line position
+                                chars = 90 # skip to next line
+                            else:
+                                if not ((chars == 0 or text[i+1:].find(' ') > (90 - chars)) and text[i] == ' '):
+                                    # do not write space at beginning or end of line
+                                    file.write(text[i])
+                                    chars += 1
+                                i += 1 # write next character                    
                     else:
-                        file.write('\n\n' + str(pgtot))
-
+                        file.write('\n' + str(pgtot))
+                        lines = 30 # end of page
                     file.write('\n')
                     lines += 1
                     
@@ -350,19 +357,21 @@ if __name__ == "__main__":
 
     n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
 
-    #print(n_gram_model)
+    # print(n_gram_model)
 
-    utilities.random.seed(10)
+    utilities.random.seed(1000)
 
     print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
 
-    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'george', 'likes', 'cookies', '.'], False))
-
+    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'george', '?', 'likes', 'cookies', '.'], False))
+    
+    # Text generation
+    
     token_list = parse_story("308.txt")
     text = gen_bot_text(token_list, False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
 
-
+    '''
     token_list = parse_story("18155.txt")
     print('building model...')
     n_gram_model = build_ngram_model(parse_story("18155.txt"), 2)
@@ -370,5 +379,5 @@ if __name__ == "__main__":
     text = gen_bot_text(gen_bot_list(n_gram_model, ('there', 'was'), len(token_list)), False)
     print('making story...')
     write_story('three pigs test.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
-
+    '''
     
