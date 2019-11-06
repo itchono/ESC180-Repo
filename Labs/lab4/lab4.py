@@ -77,14 +77,17 @@ def build_ngram_counts(words, n):
         result[ng_tuple] = [[],[]] # initialize count lists
         
         for j in range(0, len(words) - n):
-            # check how many times this occurs afterwards
-            # start index of search bound
+            # secondary loop. checks where the previously found n-grams occur again
             seq = True
 
             # check to see where n-gram occurs in list
-            for k in range(0, n):
-                if not words[j+k] == ng_list[k]:
+            pos = 0
+            while True and pos < n:
+                # use while loop to perform linear search of array for sequence
+                if not words[j+pos] == ng_list[pos]:
                     seq = False
+                pos += 1
+                
             if seq:
                 # if n-gram appears at position j, add next word after --> position j + n
                 word = words[j+n]
@@ -100,6 +103,34 @@ def build_ngram_counts(words, n):
 
     return result
 
+def prune_ngram_counts(counts, prune_len):
+    '''
+    (dict, int) -> dict
+
+    prune_ngram_counts takes in a n-grams-with-counts dict, and removes entries in counts with low frequency.
+    it will keep the prune_len highest frequency words
+
+    <TBD> ex.
+    '''
+    result = {} # new empty dict for output
+
+    for k in counts.keys():
+        survivors = [[], []]
+        # init new array of survivors that will replace current counts
+        
+        # get list of frequencies from max to min
+        freqs = sorted(counts[k][1])
+
+        for i in range(0, prune_len):
+            # takes the nth most frequent elements, appends to survivors
+            if counts[k][1][i] >= freqs[prune_len]:
+                survivors[0].append(counts[k][0][i])
+                survivors[1].append(counts[k][1][i])
+
+        result[k] = survivors
+
+
+    return result
 
 if __name__ == "__main__":
     out_arr = parse_story('test_text_parsing.txt')
@@ -111,4 +142,9 @@ if __name__ == "__main__":
 
     print(build_ngram_counts(['the', 'child', 'will', 'go', 'out', 'to', 'play',',', 'and', 'the', 'child', 'can', 'not', 'be', 'sad', 'anymore','.'], 
     2))
+
+    testdict = {('i', 'love'): [['js', 'py3', 'c'], [20, 20, 10]],
+('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]],
+('toronto', 'is'): [['six', 'drake'], [2, 3]]}
+    print(prune_ngram_counts(testdict , 3))
 
