@@ -359,16 +359,16 @@ if __name__ == "__main__":
     print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'george', 'likes', 'cookies', '.'], False))
 
     token_list = parse_story("308.txt")
-
-    print('building model...')
-
-    n_gram_model = build_ngram_model(parse_story("308.txt"), 2)
-
-    print('generating words...')
-
-    text = gen_bot_text(gen_bot_list(n_gram_model, ('there', 'was'), len(token_list)), False)
-
-    print('making story...')
+    text = gen_bot_text(token_list, False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
+
+
+    token_list = parse_story("18155.txt")
+    print('building model...')
+    n_gram_model = build_ngram_model(parse_story("18155.txt"), 2)
+    print('generating words...')
+    text = gen_bot_text(gen_bot_list(n_gram_model, ('there', 'was'), len(token_list)), False)
+    print('making story...')
+    write_story('three pigs test.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
 
     
