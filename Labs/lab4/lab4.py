@@ -242,11 +242,8 @@ def gen_bot_text(token_list, bad_author):
         # begin with first letter captialized
         clean_list = []
         clean_list.append(str(cap_list[0]).capitalize())
-
-        print(cap_list)
-
-        i = 1
-
+        
+        i = 1 # pointer for while loop
         while i < len(token_list):
             if cap_list[i-1] in utilities.END_OF_SENTENCE_PUNCTUATION:
                 # case: end of sentence punctuation
@@ -260,7 +257,6 @@ def gen_bot_text(token_list, bad_author):
             else:
                 clean_list.append(cap_list[i])
             i+=1
-        print(clean_list)
         return ' '.join(clean_list) # turn to string
 
 
@@ -282,7 +278,53 @@ def write_story(file_name, text, title, student_name, author, year):
 
 
         # MAIN BODY
-        # TBD
+        file.write('\n')
+
+        # VARIABLE SETUP
+        i = 0 # string pointer
+        ch = 1 # chapter number
+
+        lines = 0 # lines in current page
+        pages = 0 # pages in current chapter
+        chars = 0
+
+        pgtot = 1 # total number of pages
+
+        while i < len(text):
+            
+            pages = 0
+            while pages < 12:
+                if pages == 0:
+                    # CHAPTER
+                    file.write('CHAPTER ' + str(ch) + '\n\n')
+                    ch += 1
+                    lines = 2
+                else:
+                    lines = 0
+
+                while lines < 30:
+                    chars = 0
+
+                    if (lines <= 28):
+                        while chars < 90 and i<len(text):
+                            # TBD implement space detection
+                            file.write(text[i])
+                            i += 1 # write next character
+                            chars += 1
+                    else:
+                        file.write('\n\n' + str(pgtot))
+
+                    file.write('\n')
+                    lines += 1
+                    
+                pages += 1
+                pgtot += 1
+
+
+        # FINAL FINISH
+        # <TBD> FILL REST OF PAGE
+        file.write('\n'*(30 - lines) + str(pgtot))
+
 
 if __name__ == "__main__":
 
@@ -316,3 +358,6 @@ if __name__ == "__main__":
 
     print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'I', 'cookies', '.'], False))
 
+    token_list = parse_story("308.txt")
+    text = gen_bot_text(token_list, False)
+    write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
