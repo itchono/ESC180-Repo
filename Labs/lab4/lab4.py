@@ -94,7 +94,7 @@ def build_ngram_counts(words, n):
                 if word in result[ng_tuple][0]:
                     # if duplicate
                     # add 1 to occurrences
-                    result[ng_tuple][1][result[ng_tuple].index(word)] += 1
+                    result[ng_tuple][1][result[ng_tuple][0].index(word)] += 1
                 else:
                     # if first time
                     result[ng_tuple][0].append(word)
@@ -107,10 +107,13 @@ def prune_ngram_counts(counts, prune_len):
     '''
     (dict, int) -> dict
 
-    prune_ngram_counts takes in a n-grams-with-counts dict, and removes entries in counts with low frequency.
-    it will keep the prune_len highest frequency words
+    prune_ngram_counts takes in a n-grams-with-counts dict with the same format as build_ngram_counts, 
+    and removes entries in counts with low frequency. it will keep the prune_len highest frequency words. 
+    If there is a tie, it will keep all tied words.
 
-    <TBD> ex.
+    >>> prune_ngram_counts({('i', 'love'): [['js', 'py3', 'c', 'no'], [20, 20, 10, 2]], ('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]],
+    ('toronto', 'is'): [['six', 'drake']], [2, 3]]}, 3)
+    {('i', 'love'): [['js', 'py3', 'c'], [20, 20, 10]], ('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]], ('toronto', 'is'): [['six', 'drake'], [2, 3]]}
     '''
     result = {} # new empty dict for output
 
@@ -118,21 +121,57 @@ def prune_ngram_counts(counts, prune_len):
         survivors = [[], []]
         # init new array of survivors that will replace current counts
         
-        # get list of frequencies from max to min
-        freqs = sorted(counts[k][1])
+        # get list of frequencies from max to min using reverse sort
+        freqs = sorted(counts[k][1], reverse=True)
 
-        for i in range(0, prune_len):
-            # takes the nth most frequent elements, appends to survivors
-            if counts[k][1][i] >= freqs[prune_len]:
+        n = len(counts[k][1]) if (len(counts[k][1]) < prune_len) else prune_len
+        # adjust prune length to fit array
+
+        for i in range(0, len(counts[k][1])):
+            # takes the n most frequent elements, appends to survivors
+            if counts[k][1][i] >= freqs[n-1]:
                 survivors[0].append(counts[k][0][i])
                 survivors[1].append(counts[k][1][i])
 
         result[k] = survivors
 
+    return result 
 
+def probify_ngram_counts(counts):
+    '''
+    (dict) -> dict
+
+    probify_ngram_counts takes in a dict with the same output format as prune_ngram_counts, and converts the counts
+    into probabilities.
+
+    >>> probify_ngram_counts({('i', 'love'): [['js', 'py3', 'c'], [20, 20, 10]], ('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]], ('toronto', 'is'): [['six', 'drake'], [2, 3]]})
+    {('i', 'love'): [['js', 'py3', 'c'], [0.4, 0.4, 0.2]], ('u', 'r'): [['cool', 'nice', 'lit', 'kind'], 
+    [0.32, 0.28, 0.2, 0.2]], ('toronto', 'is'): [['six', 'drake'], [0.4, 0.6]]}
+    '''
+    result = {} # new empty dict for output
+
+    for k in counts.keys():
+        result[k] = [counts[k][0], get_prob_from_count(counts[k][1])]
+        # use preexisting function to convert to probabilities
     return result
 
+def build_ngram_model(words, n):
+    '''
+    (list<str>, int) -> dict
+
+    build_ngram_model returns a dict representing an n-gram-count model, given a size of n-gram (n) and an input set of words (words).
+    This will take the **15 most common words, and show each count as a probability.
+
+    >>> build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the', 'child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+
+    '''
+    return probify_ngram_counts(prune_ngram_counts(build_ngram_counts(words, n), 15))
+
+def 
+
 if __name__ == "__main__":
+
+    '''
     out_arr = parse_story('test_text_parsing.txt')
     sample = ['the', 'code', 'should', 'handle', 'correctly', 'the', 'following', ':', 'white', 'space', '.', 'sequences', 'of',
     'punctuation', 'marks', '?', '!', '!', 'periods', 'with', 'or', 'without', 'spaces', ':', 'a', '.', '.', 'a', '.', 'a',
@@ -143,8 +182,15 @@ if __name__ == "__main__":
     print(build_ngram_counts(['the', 'child', 'will', 'go', 'out', 'to', 'play',',', 'and', 'the', 'child', 'can', 'not', 'be', 'sad', 'anymore','.'], 
     2))
 
-    testdict = {('i', 'love'): [['js', 'py3', 'c'], [20, 20, 10]],
-('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]],
-('toronto', 'is'): [['six', 'drake'], [2, 3]]}
-    print(prune_ngram_counts(testdict , 3))
+    pruned = prune_ngram_counts({('i', 'love'): [['js', 'py3', 'c', 'no'], [20, 20, 10, 2]], ('u', 'r'): [['cool', 'nice', 'lit', 'kind'], [8, 7, 5, 5]],
+    ('toronto', 'is'): [['six', 'drake'], [2, 3]]}, 3)
+
+    print(pruned)
+
+    print(probify_ngram_counts(pruned))
+    '''
+    # prelim testing
+
+    print(build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 
+    2))
 
