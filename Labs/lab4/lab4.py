@@ -169,7 +169,7 @@ def build_ngram_model(words, n):
     {('the', 'child'): [['will', 'can', 'may'], [0.5, 0.25, 0.25]], ('child', 'will'): [['the'], [1.0]], ('will', 'the'): [['child'], [1.0]], 
     ('child', 'can'): [['the'], [1.0]], ('can', 'the'): [['child'], [1.0]], ('child', 'may'): [['go'], [1.0]], ('may', 'go'): [['home'], [1.0]], ('go', 'home'): [['.'], [1.0]]}
     '''
-    return probify_ngram_counts(prune_ngram_counts(build_ngram_counts(words, n), 15))
+    return probify_ngram_counts(prune_ngram_counts(build_ngram_counts(words, n), 15)) # combine functions
 
 def gen_bot_list(ngram_model, seed, num_tokens=0):
     '''
@@ -182,7 +182,6 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
 
     See spec doc for examples.
     '''
-
     result = []
     # initialize empty list
 
@@ -194,8 +193,7 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
 
         n_len = 0 # length of each n-gram must be determined
         for k in ngram_model.keys():
-            n_len = len(k)
-            # TBD sort of inefficient
+            n_len = len(k) # length of key will be length of gram
 
         n_pos = 0 # position pointer for where to generate next n-gram
 
@@ -216,7 +214,6 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
                 current_n[i] = result[i+n_pos]
             current_n = tuple(current_n)
             
-    
     return result
 
 def gen_bot_text(token_list, bad_author):
@@ -229,17 +226,16 @@ def gen_bot_text(token_list, bad_author):
 
     See spec doc for examples.
     '''
-
     if bad_author:
         return ' '.join(token_list)
         # return raw spaced string
     else:
-        # TBD: try to merge later
         cap_list = ['']*len(token_list)
 
         for i in range(len(token_list)):
             cap_list[i] = str(token_list[i]).capitalize() if str(token_list[i]).capitalize() in utilities.ALWAYS_CAPITALIZE else token_list[i]
             # capitalize if needed
+        # now that we have properly capitalized list, we move onto the other grammar rules
 
         # begin with first letter captialized
         clean_list = []
@@ -269,11 +265,13 @@ def write_story(file_name, text, title, student_name, author, year):
     '''
     (str, str, str, str, str, number) -> None
 
-    write_story writes a story to a file
+    write_story writes a story to a file given output filename, input text string,
+    parameters for publishing etc.
+
+    Basically puts a string into a file container.
     '''
-
+    
     with open(file_name, 'w') as file:
-
         # TITLE PAGE
         file.write('\n'*10) # 10 newline chars
         file.write(title + ': ' + str(year) + ', UNLEASHED\n')
@@ -281,9 +279,7 @@ def write_story(file_name, text, title, student_name, author, year):
         file.write('Copyright year published (' + str(year) + '), publisher: EngSci press')
         file.write('\n'*17)
 
-
         # MAIN BODY
-        file.write('\n')
 
         # VARIABLE SETUP
         i = 0 # string pointer
@@ -291,52 +287,52 @@ def write_story(file_name, text, title, student_name, author, year):
 
         lines = 0 # lines in current page
         pages = 0 # pages in current chapter
-        chars = 0
+        chars = 0 # chars in line
 
         pgtot = 1 # total number of pages
 
-        while i < len(text):
-            
+        while i < len(text): # main loop controlling flow so long as string exists
             pages = 0
             while pages < 12 and i<len(text):
                 if pages == 0:
-                    # CHAPTER
-                    file.write('CHAPTER ' + str(ch) + '\n\n')
+                    # CHAPTER - write header
+                    file.write('\nCHAPTER ' + str(ch) + '\n\n')
                     ch += 1
                     lines = 2
                 else:
+                    # otherwise just reset pointer and write blank line
                     lines = 0
-
-                while lines < 30:
-                    # page
-                    chars = 0
-                    if (lines < 28):
-                        while chars < 90 and i<len(text):
-                            if text[i:].find(' ') > (90 - chars):
-                                # end of line position
-                                chars = 90 # skip to next line
-                            else:
-                                if text[i+1:].find(' ') >= (90 - chars) and text[i] == ' ':
-                                    # problem case: space followed by word which would spill over to the next line
-                                    chars = 90
-                                    # skip to next line
-                                elif not (chars == 0 and text[i] == ' '):
-                                    # do not write space at beginning of line
-                                    file.write(text[i])
-                                    chars += 1
-                                i += 1 # advance pointer                   
-                    else:
-                        file.write('\n' + str(pgtot))
-                        if i >= len(text):
-                            break
-                        lines = 30 # end of page
                     file.write('\n')
-                    lines += 1
-                    
+                while lines < 28:
+                    # page - max of 30 lines; 28 of text. 
+                    chars = 0
+                    # write main body
+                    while chars < 90 and i<len(text):
+                        # line
+                        if text[i:].find(' ') > (90 - chars):
+                            # end of line position
+                            chars = 90 # skip to next line
+                        else:
+                            if text[i+1:].find(' ') >= (90 - chars) and text[i] == ' ':
+                                # problem case: space followed by word which would spill over to the next line
+                                chars = 90
+                                # skip to next line
+                            elif not (chars == 0 and text[i] == ' '):
+                                # do not write space at beginning of line
+                                file.write(text[i])
+                                chars += 1
+                            i += 1 # advance pointer   
+
+                    file.write('\n')
+                    lines += 1                    
+                # when done
+                # write page bottom
+                file.write('\n' + str(pgtot))
+
+                #increment vars
                 pages += 1
                 pgtot += 1
-        # FINAL FINISH
-
+        # DONE
 
 if __name__ == "__main__":
     '''
@@ -363,20 +359,26 @@ if __name__ == "__main__":
 
     # print(n_gram_model)
 
-    utilities.random.seed(1000)
+    utilities.random.seed(100)
 
-    print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
+    print(gen_bot_list(n_gram_model, ('the', 'child'), 5))
 
     print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.','and', 'i', ',', '.', 'Giorno', 'Giovanna', 'have', 'a', 'piano', '.'], False))
     
-    # Text generation
-    
+    # Text generation test
 
     token_list = parse_story("308.txt")
     text = gen_bot_text(token_list, False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
 
 
+    # Write story test
+    '''
+    text = ' '.join(parse_story('308.txt'))
+    write_story('test_write_story_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
+    '''
+
+    # fun test
     '''
     token_list = parse_story("18155.txt")
     print('building model...')
@@ -384,6 +386,6 @@ if __name__ == "__main__":
     print('generating words...')
     text = gen_bot_text(gen_bot_list(n_gram_model, ('there', 'was'), len(token_list)), False)
     print('making story...')
-    write_story('three pigs test.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
+    write_story('three_pigs_test.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
     '''
     
