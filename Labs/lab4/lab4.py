@@ -195,6 +195,7 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
         for k in ngram_model.keys():
             n_len = len(k) # length of key will be length of gram
 
+        # TBD: check to use last n words of seed to generate next
         n_pos = 0 # position pointer for where to generate next n-gram
 
         current_n = ['']*n_len
