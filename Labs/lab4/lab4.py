@@ -178,6 +178,8 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
     gen_bot_list returns a randomly generated list of tokens beginning with the first three tokens of seed,
     and selecting all subsequent tokens using gen_next_token (utilities.py). 
 
+    it is assumed that the seed size and gram size are the same.
+
     list is terminated once length reaches num_tokens, or if current ngram is not in the model, or the current ngram has no proceeding outputs.
 
     See spec doc for examples.
@@ -189,33 +191,31 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
         for i in range(0, num_tokens):
             result.append(seed[i])
     else:
-        result[0:len(seed)] = seed # TBD: CHECK IF ALL OR JUST 3 bc spec doc says first N tokens
+        result[0:len(seed)] = seed # populate with first N tokens
 
         n_len = 0 # length of each n-gram must be determined
         for k in ngram_model.keys():
             n_len = len(k) # length of key will be length of gram
         
-        # check if seed is long enough to satisfy generation; if not; just return the existing seed word
-        if len(seed) >= n_len:
-            # use last n_len words of seed to generate next
-            n_pos = len(seed) - n_len # position pointer for where to generate next n-gram
+        # use last n_len words of seed to generate next
+        n_pos = 0 # position pointer for where to generate next n-gram (should always by zero given spec doc)
+        # THIS IS MADE UNDER THE STRICT ASSUMPTION THAT SEED LENGTH WILL ALWAYS BE EQUAL TO N-GRAM LENGTH
+
+        current_n = ['']*n_len
+        for i in range(n_len):
+            current_n[i] = result[i+n_pos]
+        current_n = tuple(current_n)
+
+        while len(result) < num_tokens and current_n in ngram_model.keys() and utilities.check_open_ngram(current_n, ngram_model):
+        # take advantage of lazy evaluation to check conditions in sequence
+        # validate all conditions to proceed
+            result.append(utilities.gen_next_token(current_n, ngram_model))
+            n_pos += 1 # advance pointer to next position to start generating next n-gram
 
             current_n = ['']*n_len
             for i in range(n_len):
                 current_n[i] = result[i+n_pos]
             current_n = tuple(current_n)
-
-            while len(result) < num_tokens and current_n in ngram_model.keys() and utilities.check_open_ngram(current_n, ngram_model):
-            # take advantage of lazy evaluation to check conditions in sequence
-            # validate all conditions to proceed
-                result.append(utilities.gen_next_token(current_n, ngram_model))
-                
-                n_pos += 1 # advance pointer to next position to start generating next n-gram
-
-                current_n = ['']*n_len
-                for i in range(n_len):
-                    current_n[i] = result[i+n_pos]
-                current_n = tuple(current_n)
             
     return result
 
@@ -252,6 +252,7 @@ def gen_bot_text(token_list, bad_author):
                 if not (cap_list[i] in utilities.VALID_PUNCTUATION):
                     i += 1
                 else:
+                    # special case: two points of punctuation directly after sentence start
                     clean_list.pop()
             if cap_list[i] in utilities.VALID_PUNCTUATION:
                 # case: other punctuation
@@ -372,26 +373,27 @@ if __name__ == "__main__":
 
     utilities.random.seed(10)
 
-    print(gen_bot_list(n_gram_model, ('the', 'child', 'will'), 5))
+    print(gen_bot_list(n_gram_model, ('the', 'child'), 5))
     print(gen_bot_list(n_gram_model, ('the', 'child'), 5))
 
     print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.','and', 'i', ',', '.', 'Giorno', 'Giovanna', 'have', 'a', 'piano', '.'], False))
     
+    '''
     # Text generation test
-
+    
     token_list = parse_story("308.txt")
     text = gen_bot_text(token_list, False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
 
 
     # Write story test
-    '''
+    
     text = ' '.join(parse_story('308.txt'))
     write_story('test_write_story_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
-    '''
+    
 
     # fun test
-    '''
+    
     token_list = parse_story("18155.txt")
     print('building model...')
     n_gram_model = build_ngram_model(parse_story("18155.txt"), 2)
