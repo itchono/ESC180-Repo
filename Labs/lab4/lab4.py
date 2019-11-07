@@ -189,7 +189,7 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
         for i in range(0, num_tokens):
             result.append(seed[i])
     else:
-        result[0:len(seed)] = seed
+        result[0:len(seed)] = seed # TBD: CHECK IF ALL OR JUST 3
 
         n_len = 0 # length of each n-gram must be determined
         for k in ngram_model.keys():
