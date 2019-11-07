@@ -249,13 +249,16 @@ def gen_bot_text(token_list, bad_author):
         while i < len(token_list):
             if cap_list[i-1] in utilities.END_OF_SENTENCE_PUNCTUATION:
                 # case: end of sentence punctuation
-                clean_list.append(str(cap_list[i]).capitalize())
-
-            elif i < len(token_list) -1 and cap_list[i+1] in utilities.VALID_PUNCTUATION:
+                clean_list.append(str(cap_list[i]).capitalize()) # append next word as capital
+                if not (cap_list[i] in utilities.VALID_PUNCTUATION):
+                    i += 1
+                else:
+                    clean_list.pop()
+            if cap_list[i] in utilities.VALID_PUNCTUATION:
                 # case: other punctuation
-                clean_list.append(str(cap_list[i]) + str(cap_list[i+1])) # append without space
-
-                i += 1 # skip space
+                temp = clean_list[-1] # last word element of current list
+                clean_list.pop() # remove previous
+                clean_list.append(str(temp) + str(cap_list[i])) # append without space
             else:
                 clean_list.append(cap_list[i])
             i+=1
@@ -313,11 +316,15 @@ def write_story(file_name, text, title, student_name, author, year):
                                 # end of line position
                                 chars = 90 # skip to next line
                             else:
-                                if not ((chars == 0 or text[i+1:].find(' ') > (90 - chars)) and text[i] == ' '):
-                                    # do not write space at beginning or end of line
+                                if text[i+1:].find(' ') >= (90 - chars) and text[i] == ' ':
+                                    # problem case: space followed by word which would spill over to the next line
+                                    chars = 90
+                                    # skip to next line
+                                elif not (chars == 0 and text[i] == ' '):
+                                    # do not write space at beginning of line
                                     file.write(text[i])
                                     chars += 1
-                                i += 1 # write next character                    
+                                i += 1 # advance pointer                   
                     else:
                         file.write('\n' + str(pgtot))
                         lines = 30 # end of page
@@ -326,15 +333,10 @@ def write_story(file_name, text, title, student_name, author, year):
                     
                 pages += 1
                 pgtot += 1
-
-
         # FINAL FINISH
-        # <TBD> FILL REST OF PAGE
-        file.write('\n'*(30 - lines) + str(pgtot))
 
 
 if __name__ == "__main__":
-
     '''
     out_arr = parse_story('test_text_parsing.txt')
     sample = ['the', 'code', 'should', 'handle', 'correctly', 'the', 'following', ':', 'white', 'space', '.', 'sequences', 'of',
@@ -363,13 +365,15 @@ if __name__ == "__main__":
 
     print(gen_bot_list(n_gram_model, ('hello', 'world'), 5))
 
-    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.', 'i', 'like', 'george', '?', 'likes', 'cookies', '.'], False))
+    print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.','and', 'i', ',', '.', 'Giorno', 'Giovanna', 'have', 'a', 'piano', '.'], False))
     
     # Text generation
     
+
     token_list = parse_story("308.txt")
     text = gen_bot_text(token_list, False)
     write_story('test_gen_bot_text_student.txt', text, 'Three Men in a Boat', 'Jerome K. Jerome', 'Jerome K. Jerome', 1889)
+
 
     '''
     token_list = parse_story("18155.txt")
