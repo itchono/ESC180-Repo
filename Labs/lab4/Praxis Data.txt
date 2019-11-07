@@ -1,0 +1,80 @@
+The Design Alpha will consist of a conversation involving your team members and members of the
+Teaching Team. As a team, your focus should be on knowing what you have done, how you have done
+it, and what your next steps need to be. Do not think of it as a presentation. In some engineering
+workplaces, people have what is called a bench review – where a supervisor or small group will
+discuss progress on a project gathered in a board room, or quite literally at a work bench.
+Preparation for such a review is minimal – it could literally be called on the spur of the moment (like a
+pop quiz). If you have been actively working on your project, you should not find the experience
+difficult. It will involve dynamic, semi-structured conversation with members of the Teaching Team.
+The conversation will focus on understanding and critiquing both the design concepts and the process.
+During the conversation the Teaching Team will direct questions at specific team members.
+
+The Design Alpha is a chance for student teams to get early feedback on their initial design concepts
+and their design process so far. Student teams will have 15 minutes of conversation with the teaching
+team, which will give them an opportunity to gain early feedback and explore the quality of their early
+design ideas.
+
+Your team, who must demonstrate not only having engaged in credible engineering design
+activities but also having developed design concepts worthy of testing.
+You, individually, as an aspiring engineering designer who must develop both individual and
+team engineering design skills, and who needs to begin to differentiate themselves from their
+peers through their unique perspectives.
+Your teaching team, who is responsible for helping you to refine and respond to your
+opportunity with credible engineering design, and for guiding you towards the
+Recommendation Report.
+The stakeholders from your Design Brief, who by definition have an interest in both the
+recommended design concept and the process of its development.
+The Teaching Team will randomly assign team members to discuss the different
+aspects at the beginning of studio (which offers you a few minutes to prepare your thinking).1
+Discussing these four aspects of your design work should allow each person to share in the
+conversation and demonstrate their professionalism.
+Thus, teams will need to work collaboratively on the project so that knowledge of different aspects is
+shared, thus ensuring each team member is able to discuss all aspects of the design work.
+A design brief is a document that frames an opportunity from an engineering design perspective.
+The overall objective of a design brief is to provide an engineering designer or design team with
+the information and interpretations needed to successfully develop designs with the potential to
+legitimately address the opportunity. Based on a brief, designers should be able to recommend a
+conceptual design.
+For this purpose, design briefs should provide sufficient information, interpretation, and
+guidance that the respondents can focus their efforts on developing conceptual designs. A design
+brief should also enable the respondents to revisit and reframe elements of the brief if they find
+it necessary or appropriate to do so.
+In Praxis I, you need to collaborate with a team of four to create a coherent team-level vision for
+your work together to address the broad challenge that frames the opportunity; this challenge is:
+
+These criteria should be understood in conjunction with, and measured using the Design Brief
+Independent Assessment Tool. That Tool provides appropriate sub-criteria, levels of achievement,
+and level descriptions that you can use to independently assess your work. For all criteria more,
+higher, or greater are preferred.
+Note: These criteria are in no particular order and may not be weighted equally.
+1. Quality of the opportunity
+A good opportunity
+i. reflects the team's and primary stakeholders' interests and values,
+ii. represents a legitimate stakeholder need (based on research and observation),
+iii. is solvable by a team of first-year engineering science students,
+iv. can be represented and solved in multiple meaningful ways (e.g. calculation, physical
+prototype(s), drawings, demonstrations, or other means), but
+v. cannot simply be solved by selecting a reference design (existing product or service.)
+2. Correctness, appropriateness, and credibility of the engineering requirements
+Good Requirements
+i. model the opportunity and stakeholder experience in engineering terms,
+ii. incorporate codes and standards, handbooks, DfXs as necessary,
+iii. are tailored or modified to be made usable for Engineering Science students in their 1st
+term of study who have limited time to complete their design activities,
+iv. are internally consistent and consistent with the remainder of the brief.
+3. Quality of reference designs
+Reference designs demonstrate thorough consideration of existing solution possibilities and/
+or can be used to guide future design activities
+4. The quality and credibility of your engineering arguments.
+Arguments in engineering work from the data gathered (observation and research) and are
+structured using logical models (i.e. Toulmin Model).
+5. Quality of the document as a Design Brief
+A good design brief should allow a reader to read without re-reading, find information
+quickly, and find the reasoning substantive. Readability is aided by an introduction,
+structured headings and sub-headings indicating sections, and a brief conclusion, with the
+internal structure of the document designed in response to the Design Brief’s content.
+6. The coherence and clarity of your English written and visual communication.
+Integrate visuals and text to best express your meaning. Proficiency with engineering visuals
+and text is important to communicate to engineering readers, so try to use the specific
+language of design decision-making. Visuals are often the clearest way to express ideas in
+engineering (not just for decoration).
