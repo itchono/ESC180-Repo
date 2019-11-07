@@ -308,8 +308,8 @@ def write_story(file_name, text, title, student_name, author, year):
                     lines = 0
 
                 while lines < 30:
+                    # page
                     chars = 0
-
                     if (lines < 28):
                         while chars < 90 and i<len(text):
                             if text[i:].find(' ') > (90 - chars):
@@ -327,6 +327,8 @@ def write_story(file_name, text, title, student_name, author, year):
                                 i += 1 # advance pointer                   
                     else:
                         file.write('\n' + str(pgtot))
+                        if i >= len(text):
+                            break
                         lines = 30 # end of page
                     file.write('\n')
                     lines += 1
