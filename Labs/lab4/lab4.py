@@ -363,13 +363,13 @@ if __name__ == "__main__":
 
     # print(n_gram_model)
     n_gram_model = {('the', 'child'): [['will', 'can','may'],
-[0.5, 0.25, 0.25]], \
- ('child', 'will'): [['the'], [1.0]], \
- ('will', 'the'): [['child'], [1.0]], \
- ('can', 'the'): [['child'], [1.0]], \
- ('child', 'may'): [['go'], [1.0]], \
- ('may', 'go'): [['home'], [1.0]], \
- ('go', 'home'): [['.'], [1.0]]}
+    [0.5, 0.25, 0.25]], \
+    ('child', 'will'): [['the'], [1.0]], \
+    ('will', 'the'): [['child'], [1.0]], \
+    ('can', 'the'): [['child'], [1.0]], \
+    ('child', 'may'): [['go'], [1.0]], \
+    ('may', 'go'): [['home'], [1.0]], \
+    ('go', 'home'): [['.'], [1.0]]}
 
     utilities.random.seed(10)
 
