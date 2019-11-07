@@ -189,31 +189,33 @@ def gen_bot_list(ngram_model, seed, num_tokens=0):
         for i in range(0, num_tokens):
             result.append(seed[i])
     else:
-        result[0:len(seed)] = seed # TBD: CHECK IF ALL OR JUST 3
+        result[0:len(seed)] = seed # TBD: CHECK IF ALL OR JUST 3 bc spec doc says first N tokens
 
         n_len = 0 # length of each n-gram must be determined
         for k in ngram_model.keys():
             n_len = len(k) # length of key will be length of gram
-
-        # TBD: check to use last n words of seed to generate next
-        n_pos = 0 # position pointer for where to generate next n-gram
-
-        current_n = ['']*n_len
-        for i in range(n_len):
-            current_n[i] = result[i+n_pos]
-        current_n = tuple(current_n)
-
-        while len(result) < num_tokens and current_n in ngram_model.keys() and utilities.check_open_ngram(current_n, ngram_model):
-        # take advantage of lazy evaluation to check conditions in sequence
-        # validate all conditions to proceed
-            result.append(utilities.gen_next_token(current_n, ngram_model))
-            
-            n_pos += 1 # advance pointer to next position to start generating next n-gram
+        
+        # check if seed is long enough to satisfy generation; if not; just return the existing seed word
+        if len(seed) >= n_len:
+            # use last n_len words of seed to generate next
+            n_pos = len(seed) - n_len # position pointer for where to generate next n-gram
 
             current_n = ['']*n_len
             for i in range(n_len):
                 current_n[i] = result[i+n_pos]
             current_n = tuple(current_n)
+
+            while len(result) < num_tokens and current_n in ngram_model.keys() and utilities.check_open_ngram(current_n, ngram_model):
+            # take advantage of lazy evaluation to check conditions in sequence
+            # validate all conditions to proceed
+                result.append(utilities.gen_next_token(current_n, ngram_model))
+                
+                n_pos += 1 # advance pointer to next position to start generating next n-gram
+
+                current_n = ['']*n_len
+                for i in range(n_len):
+                    current_n[i] = result[i+n_pos]
+                current_n = tuple(current_n)
             
     return result
 
@@ -356,12 +358,21 @@ if __name__ == "__main__":
     '''
     # prelim testing
 
-    n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+    # n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
 
     # print(n_gram_model)
+    n_gram_model = {('the', 'child'): [['will', 'can','may'],
+[0.5, 0.25, 0.25]], \
+ ('child', 'will'): [['the'], [1.0]], \
+ ('will', 'the'): [['child'], [1.0]], \
+ ('can', 'the'): [['child'], [1.0]], \
+ ('child', 'may'): [['go'], [1.0]], \
+ ('may', 'go'): [['home'], [1.0]], \
+ ('go', 'home'): [['.'], [1.0]]}
 
-    utilities.random.seed(100)
+    utilities.random.seed(10)
 
+    print(gen_bot_list(n_gram_model, ('the', 'child', 'will'), 5))
     print(gen_bot_list(n_gram_model, ('the', 'child'), 5))
 
     print(gen_bot_text(['this', 'is', 'a', 'string', 'of', 'text','.', 'which', 'needs', 'to', 'be', 'created', '.','and', 'i', ',', '.', 'Giorno', 'Giovanna', 'have', 'a', 'piano', '.'], False))
