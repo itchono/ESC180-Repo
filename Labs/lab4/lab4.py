@@ -22,9 +22,11 @@ def parse_story(file_name):
 
             # only append if meets the conditions outlined in spec doc
             if (data_str[i].isalnum or valid_p) and not (data_str[i] in utilities.BAD_CHARS):
-                
                 clean_str += (' ' + data_str[i] + ' ') if valid_p else data_str[i]
                 # adds spaces to clean punctuation between words if it's valid punctuation
+            elif data_str[i] in utilities.BAD_CHARS:
+                clean_str += ' '
+                # special case
 
         return clean_str.lower().split() # convert to list
 
