@@ -79,17 +79,7 @@ def build_ngram_counts(words, n):
             # secondary loop. checks where the previously found n-grams occur again
             
             # check to see where n-gram occurs in remaining list
-            seq = set(ng_list).issubset(set(words[j:]))
-            # use sets to speed up detection process
-            
-            pos = 0
-            while True and pos < n:
-                # use while loop to perform linear search of array for sequence
-                if not words[j+pos] == ng_list[pos]:
-                    seq = False
-                pos += 1
-                
-            if seq:
+            if ng_tuple == tuple(words[j:j+n]): # check if sequence is correct
                 # if n-gram appears at position j, add next word after --> position j + n
                 word = words[j+n]
                 if word in result[ng_tuple][0]:
@@ -357,6 +347,7 @@ if __name__ == "__main__":
 
     print(probify_ngram_counts(pruned))
     '''
+
     # prelim testing
 
     # n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
