@@ -60,7 +60,28 @@ def Q5(n):
 def Q6():
     with open('grades.txt', 'r') as file:
         with open('new.txt', 'w') as outfile:
-            print('ok')
+            students = {}
+            lines = str(file.read()).split('\n')
+            headers = lines[0].split()
+
+            for i in range(1, len(lines)):
+                line = lines[i].split()
+                students[line[0]] = line[1:]
+
+            for i in headers:
+                outfile.write(str(i) +  '\t\t')
+            outfile.write('\n')
+
+            for k in students.keys():
+                outfile.write(k + '\t\t')
+                for v in students[k]:
+                    outfile.write(str(v) +  '\t\t')
+                outfile.write('\n')
+
+def Q7():
+    with open('onetwo.txt', 'r') as file:
+        print(file.read().replace("\n", ' '))
+
 
 if __name__ == '__main__':
     database = {'Mohamed':['A', 'A+', 'C', 'FZ', 'B-'], 'Cindy':['B', 'B', 'C', 'A', 'B'], 'Mustafa':['A', 'A+', 'A+', 'C', 'C'], 'Stefan':['FZ', 'B', 'B', 'C', 'C']}
@@ -77,6 +98,10 @@ if __name__ == '__main__':
     Q4(1001)
 
     print(Q5(50000))
+
+    Q6()
+
+    Q7()
 
 
 
