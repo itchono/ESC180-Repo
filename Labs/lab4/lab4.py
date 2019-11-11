@@ -65,16 +65,9 @@ def build_ngram_counts(words, n):
 
     for i in range(0, len(words) - n):
         # main loop. used to define starting positions for each n-gram
-
         # no tokens proceed the 2nd-last n-gram, thus it does not need to be len(words) - n + 1.
         
-        ng_list = [''] * n # prototype list for n-gram
-
-        for j in range(i, i+n): # loop used to cycls through words for n-gram
-            ng_list[j-i] = words[j] # puts word at position j into position 0, 1 ...n of the n-gram
-        
-        #n-gram is complete at this point
-        ng_tuple = tuple(ng_list)
+        ng_tuple = tuple(words[i:i+n])
         result[ng_tuple] = [[],[]] # initialize count lists
         
         for j in range(0, len(words) - n):
@@ -352,9 +345,9 @@ if __name__ == "__main__":
 
     # prelim testing
 
-    # n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
+    n_gram_model = build_ngram_model(['the', 'child', 'will', 'the', 'child', 'can', 'the','child', 'will', 'the', 'child', 'may', 'go', 'home', '.'], 2)
 
-    # print(n_gram_model)
+    print(n_gram_model)
     n_gram_model = {('the', 'child'): [['will', 'can','may'],
     [0.5, 0.25, 0.25]], \
     ('child', 'will'): [['the'], [1.0]], \
