@@ -31,17 +31,18 @@ class BinarySearchTree:
     
             previousNode = currentNode
             # node to left must be less, node to right must be greater
-            if str(node) < str(currentNode):
-                currentNode = currentNode.left
-            else:
+            if str(node) > str(currentNode):
                 currentNode = currentNode.right
+            else:
+                # <= handled by left
+                currentNode = currentNode.left
             # recursively check next
 
         # insert node after finishing (we found an empty space to put me)
-        if str(node) < str(previousNode):
-            previousNode.left = node
-        else:
+        if str(node) > str(previousNode):
             previousNode.right = node
+        else:
+            previousNode.left = node
     
     def search(self, val):
         tStart = time.perf_counter() # define starting time
@@ -52,10 +53,10 @@ class BinarySearchTree:
         while currentNode != None and not found:
             # node to left must be less, node to right must be greater
             # use this to determine our next 'move'
-            if val < str(currentNode):
-                currentNode = currentNode.left
-            else:
+            if val > str(currentNode):
                 currentNode = currentNode.right
+            else:
+                currentNode = currentNode.left
 
             found = (str(currentNode) == val)
         
