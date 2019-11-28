@@ -44,8 +44,7 @@ class BinarySearchTree:
             previousNode.right = node
     
     def search(self, val):
-        tStart = time.time() # define starting time
-        print(tStart)
+        tStart = time.monotonic_ns() # define starting time
 
         currentNode = self.root
         found = (str(currentNode) == val)
@@ -60,9 +59,13 @@ class BinarySearchTree:
 
             found = (str(currentNode) == val)
         
-        tElapsed = time.time() - tStart
+        tEnd = time.monotonic_ns()
+
+        print(tStart)
+        print(tEnd)
+        tElapsed = tEnd - tStart
         
-        print('Elapsed Time: {} ms'.format(tElapsed*1000))
+        print('Elapsed Time: {:.3f} ms'.format(tElapsed*1000))
         return found
 
 def constructBST(filename):
