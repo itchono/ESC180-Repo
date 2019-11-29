@@ -13,7 +13,11 @@ class Node:
         self.right = right
 
     def __str__(self):
-        # overload to_string method
+        '''
+        (instance method) --> str
+
+        overloads the built in str() method and returns string with the value of the node.
+        '''
         return self.data
 
 class BinarySearchTree:
@@ -22,7 +26,11 @@ class BinarySearchTree:
         self.root = root
 
     def insert(self, node):
-        
+        '''
+        (instance method, Node) --> None
+
+        Inserts the Node, node, into the corresponding position of the tree.
+        '''
         currentNode = self.root
         previousNode = None
 
@@ -30,21 +38,25 @@ class BinarySearchTree:
             # while node still exists along my current path, keep going
     
             previousNode = currentNode
-            # node to left must be less, node to right must be greater
+            # node to left must be less than or equal, node to right must be greater
             if str(node) > str(currentNode):
                 currentNode = currentNode.right
             else:
-                # <= handled by left
                 currentNode = currentNode.left
-            # recursively check next
+            # iteratively check next
 
-        # insert node after finishing (we found an empty space to put me)
+        # insert node
         if str(node) > str(previousNode):
             previousNode.right = node
         else:
             previousNode.left = node
     
     def search(self, val):
+        '''
+        (instance variable, str) --> bool
+
+        checks if the string, val, exists as a data value of a node in the tree.
+        '''
         tStart = time.perf_counter() # define starting time
 
         currentNode = self.root
@@ -60,15 +72,15 @@ class BinarySearchTree:
 
             found = (str(currentNode) == val)
         
-        tEnd = time.perf_counter()
-
-        
-        tElapsed = tEnd - tStart
-        
-        print('Elapsed Time: {:.3f} ms'.format(tElapsed*1000))
+        print('Elapsed Time: {:.3f} ms'.format((time.perf_counter() - tStart)*1000))
         return found
 
 def constructBST(filename):
+    '''
+    (str) --> BinarySearchTree
+
+    takes in filename, reads strings, and inserts into a binary search tree, returning it afterward.
+    '''
     with open(filename) as f:
         vals = f.read().strip('\n').split('\n') # clean up input
 
@@ -82,6 +94,7 @@ def constructBST(filename):
         return tree
     
 if __name__ == "__main__":
+
     tree = constructBST('websites.txt')
 
-    print(tree.search("zzzz8.cn"))
+    print(tree.search("google.com"))
