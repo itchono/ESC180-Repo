@@ -18,7 +18,7 @@ class Node:
 
         overloads the built in str() method and returns string with the value of the node.
         '''
-        return self.data
+        return str(self.data) # cast to string just to be sure
 
 class BinarySearchTree:
 
@@ -109,3 +109,4 @@ if __name__ == "__main__":
     tree = constructBST('websites.txt')
 
     print(tree.search('googole.com'))
+    
