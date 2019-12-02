@@ -25,6 +25,18 @@ class BinarySearchTree:
     def __init__(self, root):
         self.root = root
 
+    def insert_recursive(self, node, curr = self.root):
+        if node.data <= curr.data:
+            if curr.left is None:
+                curr.left = node # done
+            else:
+                self.insert_recursive(node, curr.left)
+        else:
+            if curr.right is None:
+                curr.right = node
+            else:
+                self.insert_recursive(node, curr.right)
+
     def insert(self, node):
         '''
         (instance method, Node) --> None
@@ -100,7 +112,7 @@ def constructBST(filename):
 
         for i in range(0, len(vals)):
             # insert values directly
-            tree.insert(Node(vals[i]))
+            tree.insert_recursive(Node(vals[i]))
 
         return tree
     
