@@ -26,6 +26,7 @@ class BinarySearchTree:
         self.root = root
 
     def insert_recursive(self, node, curr = self.root):
+        # DOES NOT CURRENTLY WORK; needs primer method
         if node.data <= curr.data:
             if curr.left is None:
                 curr.left = node # done
