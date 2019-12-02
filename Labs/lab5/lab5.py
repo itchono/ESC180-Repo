@@ -31,26 +31,31 @@ class BinarySearchTree:
 
         Inserts the Node, node, into the corresponding position of the tree.
         '''
-        currentNode = self.root
-        previousNode = None
+        if self.root != None:
+            # make sure root exists
+            currentNode = self.root
+            previousNode = None
 
-        while currentNode != None:
-            # while node still exists along my current path, keep going
-    
-            previousNode = currentNode
-            # node to left must be less than or equal, node to right must be greater
-            if str(node) > str(currentNode):
-                currentNode = currentNode.right
+            while currentNode != None:
+                # while node still exists along my current path, keep going
+        
+                previousNode = currentNode
+                # node to left must be less than or equal, node to right must be greater
+                if node.data > currentNode.data:
+                    currentNode = currentNode.right
+                else:
+                    currentNode = currentNode.left
+                # iteratively check next
+
+            # insert node
+            if node.data > previousNode.data:
+                previousNode.right = node
             else:
-                currentNode = currentNode.left
-            # iteratively check next
-
-        # insert node
-        if str(node) > str(previousNode):
-            previousNode.right = node
+                previousNode.left = node
         else:
-            previousNode.left = node
-    
+            # if root does not exist, insert directly
+            self.root = node
+
     def search(self, val):
         '''
         (instance variable, str) --> bool
@@ -60,20 +65,26 @@ class BinarySearchTree:
         tStart = time.perf_counter() # define starting time
 
         currentNode = self.root
-        found = (str(currentNode) == val)
+        found = (currentNode.data == val)
 
         while currentNode != None and not found:
             # node to left must be less, node to right must be greater
             # use this to determine our next 'move'
-            if val > str(currentNode):
+            if val > currentNode.data:
                 currentNode = currentNode.right
             else:
                 currentNode = currentNode.left
 
-            found = (str(currentNode) == val)
+            try:
+                # speed up searching using try/catch
+                found = (currentNode.data == val)
+            except AttributeError:
+                found = False
         
         print('Elapsed Time: {:.3f} ms'.format((time.perf_counter() - tStart)*1000))
         return found
+
+        # findings: Searching is incredibly fast.
 
 def constructBST(filename):
     '''
@@ -84,11 +95,11 @@ def constructBST(filename):
     with open(filename) as f:
         vals = f.read().strip('\n').split('\n') # clean up input
 
-        tree = BinarySearchTree(Node(vals[0]))
-        # begin with first link as root
+        tree = BinarySearchTree(None)
+        # empty tree
 
-        for i in range(1, len(vals)):
-            # insert the rest directly
+        for i in range(0, len(vals)):
+            # insert values directly
             tree.insert(Node(vals[i]))
 
         return tree
@@ -97,4 +108,4 @@ if __name__ == "__main__":
 
     tree = constructBST('websites.txt')
 
-    print(tree.search("google.com"))
+    print(tree.search('googole.com'))
