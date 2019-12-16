@@ -72,17 +72,27 @@ def swap_in_place(n):
 # Q5
 # String manipulation review
 def transform_to_words(s):
-    clean = s.lower().replace(',', '').replace('!', '').replace('.', '')
-    return clean.split(" ")
+    clean = ''
+    for c in s:
+        if c == ' ' or c.isalpha():
+            clean += c.lower()
+    return clean.split()
 
 # Q6
 def num_duplicates(d):
+    # interesting alt solution
+
     dupes = 0
+    vals = []
     for k in d:
-        for other_key in d:
-            if other_key != k and d[other_key] == d[k]:
+        if not d[k] in vals:
+            vals.append(d[k])
+            locald = False
+            for other_key in d:
+                if other_key != k and d[other_key] == d[k]:
+                    locald = True
+            if locald:
                 dupes += 1
-                break
     return dupes
 
 
