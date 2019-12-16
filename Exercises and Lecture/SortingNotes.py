@@ -54,7 +54,7 @@ def selectionnsort(arr):
     comparisons = 0
     swaps = 0
 
-    for i in range(len(arr)):
+    for i in range(len(arr)-1):
         pos_min = i
 
         for j in range(i+1, len(arr)):

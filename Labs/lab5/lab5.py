@@ -25,18 +25,24 @@ class BinarySearchTree:
     def __init__(self, root):
         self.root = root
 
-    def insert_recursive(self, node, curr = self.root):
-        # DOES NOT CURRENTLY WORK; needs primer method
-        if node.data <= curr.data:
-            if curr.left is None:
-                curr.left = node # done
+    def insert_recursive(self, node, curr = None):
+        try:
+            if node.data <= curr.data:
+                if curr.left is None:
+                    curr.left = node # done
+                else:
+                    self.insert_recursive(node, curr.left)
             else:
-                self.insert_recursive(node, curr.left)
-        else:
-            if curr.right is None:
-                curr.right = node
+                if curr.right is None:
+                    curr.right = node # done
+                else:
+                    self.insert_recursive(node, curr.right)
+        except AttributeError:
+            # if curr node is None
+            if not self.root is None:
+                self.insert_recursive(node, self.root)
             else:
-                self.insert_recursive(node, curr.right)
+                self.root = node
 
     def insert(self, node):
         '''
@@ -68,6 +74,29 @@ class BinarySearchTree:
         else:
             # if root does not exist, insert directly
             self.root = node
+
+    def recursive_search(self, val, curr=None, rec=False):
+        '''
+        (instance method, str) --> bool
+
+        Determines whether a string value, val exists within any node of the BST.
+
+        tree.recursive_search("google.com")
+        >>> true
+        '''
+        if not curr is None:
+            if val < curr.data:
+                return self.recursive_search(val, curr.left, rec=True)
+            elif val > curr.data:
+                return self.recursive_search(val, curr.right, rec=True)
+            else:
+                return True
+        else:
+            if not rec:
+                return self.recursive_search(val, self.root, rec=True)
+            else:
+                return False
+
 
     def search(self, val):
         '''
@@ -111,9 +140,18 @@ def constructBST(filename):
         tree = BinarySearchTree(None)
         # empty tree
 
-        for i in range(0, len(vals)):
-            # insert values directly
-            tree.insert_recursive(Node(vals[i]))
+        res = input("(R/I)?")
+
+        rec = res.lower() == 'r'
+
+        if rec:
+            for i in range(0, len(vals)):
+                # insert values directly
+                tree.insert_recursive(Node(vals[i]))
+        else:
+            for i in range(0, len(vals)):
+                # insert values directly
+                tree.insert(Node(vals[i]))
 
         return tree
     
@@ -121,5 +159,5 @@ if __name__ == "__main__":
 
     tree = constructBST('websites.txt')
 
-    print(tree.search('googole.com'))
+    print(tree.recursive_search('googole.com'))
     
