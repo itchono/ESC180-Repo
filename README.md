@@ -1,2 +1,3 @@
 # ESC180-Repo
- Semester 1 course for Mingde
+Private work.
+Semester 1 course for Mingde
